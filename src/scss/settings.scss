@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
+
+$violete: #7F3DFF;
+$transparent-violete: #E5E5E5;
+$blue: #0077FF;
+$red: #FD3C4A;
+$white: #fff;
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
