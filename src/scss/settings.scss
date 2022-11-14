@@ -6,9 +6,17 @@ $blue: #0077FF;
 $red: #FD3C4A;
 $white: #fff;
 
+.button {
+  padding: 17px;
+  width: 100%;
+  font-weight: 700;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-family: 'Inter', sans-serif;
 }
