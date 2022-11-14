@@ -1,11 +1,9 @@
 import React from "react";
-import styles from './Starter.module.scss';
-import {Button} from "../../components/Button";
-import {Link} from "react-router-dom";
-import {AnimatePresence, motion} from "framer-motion";
+import styles from '@styles/routes/Starter.module.scss';
+import {motion} from "framer-motion";
+import {Button} from "@components/Button";
 
 export const Starter: React.FC = () => {
-
     return (
         <motion.div
             className={styles.root}
