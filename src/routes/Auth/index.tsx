@@ -1,6 +1,7 @@
 import {motion} from "framer-motion";
 import {Slider} from "../../components/Slider";
 import {Button} from "../../components/Button";
+import styles from "@styles/routes/Auth.module.scss";
 
 export const Auth = () => {
 
@@ -16,9 +17,11 @@ export const Auth = () => {
                 default: {ease: "easeInOut"}
             }}
         >
-        <Slider />
-            <Button text={'Sign Up'} type={'violet'} />
-            <Button text={'Login'} type={'transViolet'} />
+            <Slider/>
+            <div className={styles.buttonsGroup}>
+                <Button text={'Sign Up'} type={'violet'}/>
+                <Button text={'Login'} type={'transViolet'}/>
+            </div>
         </motion.div>
     );
 }

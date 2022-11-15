@@ -5,10 +5,10 @@ import { Slide } from "./Slide";
 
 export const SliderList: React.FC = () => {
   // @ts-ignore
-  const { sliderList } = React.useContext(SliderContext);
+  const { sliderList, slide } = React.useContext(SliderContext);
 
   return (
-    <div className={styles.list}>
+    <div className={styles.list} style={{transform: `translate(${-slide * 100}%)`}}>
       {sliderList.map((item: ISlide, index: number) => (
         <Slide key={index} {...item} />
       ))}

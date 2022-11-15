@@ -6,8 +6,41 @@
 .list {
   width: 100%;
   display: flex;
+  transition: transform 0.5s ease;
 }
 
 .slide {
-  flex: 0 1 100%;
+  flex: 1 0 100%;
+  pointer-events: none;
+}
+
+.content {
+
+  h2 {
+    margin-bottom: 15px;
+  }
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 0;
+  margin-bottom: 16px;
+  list-style: none;
+}
+.dot {
+  flex:0 0 8px;
+  height: 7px;
+  border-radius: 50%;
+  background: $transparent-violete;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+
+  &.active {
+    transform: scaleX(2) scaleY(2.3);
+    background: $violete;
+  }
 }
