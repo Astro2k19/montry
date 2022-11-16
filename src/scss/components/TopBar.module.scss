@@ -1,0 +1,30 @@
+.bar {
+  display: flex;
+  align-items: center;
+  color: $black;
+
+  &.white {
+    color: $white;
+  }
+}
+
+.buttonBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 32px;
+  height: 32px;
+  background: none;
+  font-size: 32px;
+  border: none;
+  outline: none;
+  color: inherit;
+}
+
+.barText {
+  flex: 1 1 auto;
+  font-weight: 600;
+  font-size: 18px;
+  color: inherit;
+  text-align: center;
+}

@@ -65,8 +65,6 @@ export const Slider = () => {
     const touchMove = event.touches[0].pageX;
     const difference = touchStartPosition - touchMove;
 
-    console.log(difference, "diff");
-
     if (difference > 5) {
       changeSlide(1);
     } else if (difference < -5) {

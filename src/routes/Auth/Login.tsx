@@ -1,6 +1,5 @@
-export const Login = () => {
+import { TopBar, TopBarTypes } from "../../components/TopBar";
 
-    return (
-        <div>login</div>
-    );
-}
+export const Login = () => {
+  return <TopBar text={"Sign Up"} type={TopBarTypes.DARK} />;
+};
