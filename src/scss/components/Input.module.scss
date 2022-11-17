@@ -1,0 +1,14 @@
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #F1F1FA;
+  border-radius: 16px;
+  background: $white;
+  color: $grey;
+  outline-color: $grey;
+}
+
+.inputGroup {
+  display: grid;
+  row-gap: 25px;
+}

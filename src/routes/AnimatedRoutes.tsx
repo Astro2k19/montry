@@ -10,9 +10,7 @@ import { AnimatePresence } from "framer-motion";
 
 export const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
-
-  console.log(location);
-
+  
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
@@ -20,11 +18,7 @@ export const AnimatedRoutes: React.FC = () => {
         <Route path="/auth" element={<Auth />} errorElement={<ErrorPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/dashboard"
-          element={<Starter />}
-          errorElement={<ErrorPage />}
-        />
+        <Route path="/dashboard" element={<Starter />} errorElement={<ErrorPage />} />
       </Routes>
     </AnimatePresence>
   );

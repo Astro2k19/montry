@@ -1,32 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 interface ButtonProps {
   text: string;
   type: string;
-  path: string;
+  icon?: string;
+  clickHandler: (event: React.MouseEvent) => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({ text, type, path }) => {
-  const buttonOptions: any = {
-    background: {
-      violet: "#7F3DFF",
-      transViolet: "#EEE5FF",
-    },
-    color: {
-      violet: "#EEE5FF",
-      transViolet: "#7F3DFF",
-    },
-  };
 
-  const styles = {
-    background: buttonOptions.background[type],
-    color: buttonOptions.color[type],
-  };
+export enum ButtonType {
+  VIOLET = 'violet',
+  TRANS_VIOLET = 'transViolet',
+  WHITE = 'white'
+}
+
+
+export const Button: React.FC<ButtonProps> = ({ text, type, clickHandler, icon  }) => {
+  const classes = classNames('button', {
+    violet: type === ButtonType.VIOLET,
+    transViolet: type === ButtonType.TRANS_VIOLET,
+    white: type === ButtonType.WHITE
+  })
 
   return (
-    <Link to={path} className={"button"} style={styles}>
+    <button className={classes} onClick={clickHandler}>
+      {icon && <img src={icon} alt="icon"/>}
       {text}
-    </Link>
+    </button>
   );
 };

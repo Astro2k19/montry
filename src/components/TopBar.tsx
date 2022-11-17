@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 
 export const TopBar: React.FC<ITopBar> = ({
   text,
-  type = TopBarTypes.LIGHT,
+  type = TopBarTypes.DARK,
 }) => {
   const navigate = useNavigate();
 

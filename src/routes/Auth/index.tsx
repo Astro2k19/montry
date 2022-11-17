@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { Slider } from "../../components/Slider";
-import { Button } from "../../components/Button";
+import {Button, ButtonType} from "../../components/Button";
 import styles from "@styles/routes/Auth.module.scss";
+import {useNavigate} from "react-router";
 
 export const Auth = () => {
-  Slider;
+    const navigate = useNavigate();
+
+    const goTo = (path: string) => navigate(path);
 
   return (
     <motion.div
@@ -18,8 +21,8 @@ export const Auth = () => {
     >
       <Slider />
       <div className={styles.buttonsGroup}>
-        <Button text={"Sign Up"} type={"violet"} path={"/signup"} />
-        <Button text={"Login"} type={"transViolet"} path={"/login"} />
+        <Button text={"Sign Up"} type={ButtonType.VIOLET} clickHandler={() => goTo("/signup")} />
+        <Button text={"Login"} type={ButtonType.TRANS_VIOLET} clickHandler={() => goTo("/login")}/>
       </div>
     </motion.div>
   );

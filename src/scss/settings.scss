@@ -1,22 +1,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
 
 $violete: #7F3DFF;
-$transparent-violete: #E5E5E5;
+$transparent-violete: #EEE5FF;
 $blue: #0077FF;
 $red: #FD3C4A;
 $white: #fff;
 $black: #212325;
+$grey: #91919F;
 
 .button {
-  display: block;
+  display: flex;
   padding: 17px;
   width: 100%;
   font-weight: 700;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
+  background: $white;
+  color: $black;
+
+  &.violet {
+    background: $violete;
+    color: $white;
+  }
+
+  &.transViolet {
+    background: $transparent-violete;
+    color: $violete;
+  }
+
+  &.white {
+    border: 1px solid #F1F1FA;
+  }
+
+  &:has(img) {
+    gap: 13px;
+  }
+
+  img {
+    width: 21px;
+    height: 21px;
+  }
+
+
 }
 
 body {
