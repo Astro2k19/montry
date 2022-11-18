@@ -21,6 +21,10 @@ $grey: #91919F;
   text-decoration: none;
   background: $white;
   color: $black;
+  &[disabled] {
+    opacity: 0.6;
+    cursor: auto;
+  }
 
   &.violet {
     background: $violete;

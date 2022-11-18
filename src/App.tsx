@@ -1,22 +1,11 @@
 import React from "react";
-import {BrowserRouter} from "react-router-dom";
-import {AnimatedRoutes} from "./routes/AnimatedRoutes";
-import {Provider} from "react-redux";
-import {store} from "./redux/store";
+import { BrowserRouter } from "react-router-dom";
+import { AnimatedRoutes } from "./routes/AnimatedRoutes";
+import { Provider, useDispatch } from "react-redux";
+import { store } from "./redux/store";
 
-const App:React.FC<React.PropsWithChildren> = () => {
-  return (
-    <div className="App">
-      <Provider store={store}>
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </Provider>
-    </div>
-  )
-}
+const App: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <div className="App">{children}</div>;
+};
 
-export default App
-
-
-
+export default App;

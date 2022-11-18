@@ -6,27 +6,32 @@ interface ButtonProps {
   text: string;
   type: string;
   icon?: string;
+  disabled?: boolean;
   clickHandler: (event: React.MouseEvent) => void;
 }
 
-
 export enum ButtonType {
-  VIOLET = 'violet',
-  TRANS_VIOLET = 'transViolet',
-  WHITE = 'white'
+  VIOLET = "violet",
+  TRANS_VIOLET = "transViolet",
+  WHITE = "white",
 }
 
-
-export const Button: React.FC<ButtonProps> = ({ text, type, clickHandler, icon  }) => {
-  const classes = classNames('button', {
+export const Button: React.FC<ButtonProps> = ({
+  text,
+  type,
+  clickHandler,
+  icon,
+  disabled = false,
+}) => {
+  const classes = classNames("button", {
     violet: type === ButtonType.VIOLET,
     transViolet: type === ButtonType.TRANS_VIOLET,
-    white: type === ButtonType.WHITE
-  })
+    white: type === ButtonType.WHITE,
+  });
 
   return (
-    <button className={classes} onClick={clickHandler}>
-      {icon && <img src={icon} alt="icon"/>}
+    <button className={classes} onClick={clickHandler} disabled={disabled}>
+      {icon && <img src={icon} alt="icon" />}
       {text}
     </button>
   );
