@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import googleLogo from "@assets/google.svg";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {setUser, setStatus} from "../../redux/slices/authSlice";
+import {useNavigate} from "react-router";
 
 export const SignUp = () => {
   const [formData, setFormData] = React.useState({
@@ -16,6 +19,10 @@ export const SignUp = () => {
     password: "",
     isReadRules: false,
   });
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(state => state.auth.loading);
+  const navigate = useNavigate();
+
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.name) return;
@@ -32,16 +39,36 @@ export const SignUp = () => {
     });
   };
 
-  const signUpWithEmail = () => {
-    console.log(formData);
-    createUserWithEmailAndPassword(
-      auth,
-      formData.email,
-      formData.password
-    ).catch((error) => console.error(error));
+  console.log(isLoading)
+
+  const signUpWithEmail = async  () => {
+
+    try {
+      dispatch(setStatus(true));
+
+      const {user} = await createUserWithEmailAndPassword(
+          auth,
+          formData.email,
+          formData.password
+      );
+
+      dispatch(setUser({
+        email: user.email,
+        uid: user.uid,
+      }))
+
+      dispatch(setStatus(false));
+      navigate('/dashboard');
+
+    } catch (error) {
+      alert(error.message)
+    }
+
   };
 
-  const signUpWithGoogleAcc = () => {};
+  const signUpWithGoogleAcc = () => {
+
+  };
 
   return (
     <>
