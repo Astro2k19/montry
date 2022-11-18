@@ -6,6 +6,8 @@ import styles from '@styles/routes/EntryForm.module.scss';
 import {Button, ButtonType} from "@components/Button";
 import {Link} from "react-router-dom";
 import googleLogo from '@assets/google.svg';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../../firebase/firebase.config";
 
 export const SignUp = () => {
 
@@ -28,7 +30,10 @@ export const SignUp = () => {
         })
     }
 
-    const signUpWithEmail = () => {}
+    const signUpWithEmail = () => {
+        createUserWithEmailAndPassword(auth, formData.email, formData.password)
+            .catch(error => console.error(error))
+    }
 
     const signUpWithGoogleAcc = () => {
 

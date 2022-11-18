@@ -1,27 +1,26 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {init} from "../../firebase/auth";
 
-const initialState = {
-    authUser: null,
-    email: '',
-    uid: '',
-    token: ''
-}
+const initialState = init();
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setData(state, action) {
-            return action.payload;
+        setUser(state, action) {
+            state.authUser = action.payload;
         },
-        updateData() {
+        clearUser(state) {
+            state.authUser = null;
+        },
+        updateUser() {
 
         },
-        clearData() {
+        setStatus() {
 
         }
     }
 });
 
-export const {setData, updateData, clearData} = authSlice.actions;
+export const {setUser, clearUser, updateUser} = authSlice.actions;
 export default authSlice.reducer;
