@@ -1,0 +1,6 @@
+Starter page
+Auth page
+Login page
+Sign up page
+    SetupAccount page
+
