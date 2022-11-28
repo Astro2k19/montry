@@ -1,0 +1,12 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background-color: $violete;
+  height: 100%;
+}
+
+.setupBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}

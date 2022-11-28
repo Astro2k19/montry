@@ -6,11 +6,11 @@ interface IInput {
   value: string;
   placeholder: string;
   type: string;
-  name: string;
+  name?: string;
   Icon?: React.ElementType;
 }
 
-export const Input: React.FC<IInput> = ({
+export const DataInput: React.FC<IInput> = ({
   handleOnChange,
   value,
   type = "text",

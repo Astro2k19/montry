@@ -10,8 +10,8 @@ type SignInStatus = "loading" | "success" | "error" | "initial";
 
 interface IInitialUserState {
   authUser: IAuthUser | null;
+  isSetupAccount: boolean;
   status: SignInStatus;
-  isSetup: boolean;
   error: string;
 }
 
@@ -65,8 +65,11 @@ export const LogInUserWithCredentials = createAsyncThunk(
 );
 
 const initialState: IInitialUserState = {
-  authUser: null,
-  isSetup: false,
+  authUser: {
+    uid: "asdfsdfsdaf34234",
+    email: "asdfasdf@gmail.com",
+  },
+  isSetupAccount: false,
   status: "initial",
   error: "",
 };

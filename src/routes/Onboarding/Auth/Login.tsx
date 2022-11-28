@@ -2,12 +2,12 @@ import { TopBar, TopBarTypes } from "../../../components/TopBar";
 import React from "react";
 import styles from "@styles/routes/EntryForm.module.scss";
 import { Link } from "react-router-dom";
-import { Input } from "../../../components/Input";
-import { InputGroup } from "../../../components/InputGroup";
-import { Button, ButtonType } from "../../../components/Button";
+import { DataInput } from "@components/DataInput";
+import { InputGroup } from "@components/InputGroup";
+import { Button, ButtonType } from "@components/Button";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router";
-import Loader from "../../../components/Loader";
+import Loader from "@components/Loader";
 import { LogInUserWithCredentials } from "../../../redux/slices/authSlice";
 
 export const Login = () => {
@@ -63,14 +63,14 @@ export const Login = () => {
           status === "initial" ? (
           <>
             <InputGroup>
-              <Input
+              <DataInput
                 handleOnChange={onChange}
                 value={formData.email}
                 placeholder={"Email"}
                 type={"email"}
                 name={"email"}
               />
-              <Input
+              <DataInput
                 handleOnChange={onChange}
                 value={formData.password}
                 placeholder={"Password"}

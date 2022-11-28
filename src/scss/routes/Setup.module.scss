@@ -1,0 +1,23 @@
+.setupIndexPage {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  padding: 66px 0 17px 0;
+}
+
+.setupIndexContent {
+  color: $black;
+
+  h3 {
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  p {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

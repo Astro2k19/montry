@@ -1,6 +1,6 @@
 import React from "react";
 import { TopBar, TopBarTypes } from "../../../components/TopBar";
-import { Input } from "@components/Input";
+import { DataInput } from "@components/DataInput";
 import { InputGroup } from "@components/InputGroup";
 import styles from "@styles/routes/EntryForm.module.scss";
 import { Button, ButtonType } from "@components/Button";
@@ -55,7 +55,7 @@ export const SignUp = () => {
 
   React.useEffect(() => {
     if (status === "success") {
-      navigate("/dashboard");
+      navigate("/setup-account");
     }
   }, [status]);
 
@@ -72,21 +72,21 @@ export const SignUp = () => {
           status === "error" ? (
           <>
             <InputGroup>
-              <Input
+              <DataInput
                 handleOnChange={onChange}
                 value={formData.name}
                 placeholder={"Name"}
                 type={"text"}
                 name={"name"}
               />
-              <Input
+              <DataInput
                 handleOnChange={onChange}
                 value={formData.email}
                 placeholder={"Email"}
                 type={"email"}
                 name={"email"}
               />
-              <Input
+              <DataInput
                 handleOnChange={onChange}
                 value={formData.password}
                 placeholder={"Password"}
