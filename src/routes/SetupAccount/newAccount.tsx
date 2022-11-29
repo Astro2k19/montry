@@ -61,9 +61,15 @@ const SetupNewAccount = () => {
     }));
   };
 
+  const saveAndFinishSetup = () => {
+    // const
+  };
+
+  const saveAndCreateAnother = () => {};
+
   return (
     <div className={styles.root}>
-      <TopBar text={"Add new account"} type={TopBarTypes.LIGHT} />
+      <TopBar text={"Add new wallet"} type={TopBarTypes.LIGHT} />
       <div className={styles.setupBlock}>
         <CashInput
           title={"Balance"}
@@ -83,14 +89,41 @@ const SetupNewAccount = () => {
             <Select
               onChange={onChangeSelect}
               options={options}
-              className={selectStyles.select}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  borderRadius: "16px",
+                  borderColor: state.isFocused ? "#91919F" : "#F1F1FA",
+                  borderWidth: "2px",
+                  boxShadow: "none",
+                  minHeight: "50px",
+                }),
+                indicatorSeparator: (baseStyles, state) => ({
+                  display: "none",
+                }),
+                input: (baseStyles, state) => ({
+                  ...baseStyles,
+                  color: "#91919F",
+                }),
+                menu: (baseStyles, state) => ({
+                  ...baseStyles,
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                }),
+              }}
               value={{
                 value: selectState.typeValue,
                 label: selectState.typeLabel,
               }}
             />
             <Button
-              text={"Continue"}
+              text={"Save and create another one"}
+              type={ButtonType.VIOLET}
+              clickHandler={() => console.log("hello")}
+              style={{ marginTop: "15px" }}
+            />
+            <Button
+              text={"Save and finish setup"}
               type={ButtonType.VIOLET}
               clickHandler={() => console.log("hello")}
               style={{ marginTop: "15px" }}

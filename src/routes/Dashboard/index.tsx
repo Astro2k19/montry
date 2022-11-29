@@ -6,13 +6,8 @@ import { useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router";
 
 const Dashboard = () => {
-  const { isSetupAccount } = useAppSelector((state) => state.auth);
+  const { isSetupAccount } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (!isSetupAccount) {
-    }
-  });
 
   return (
     <div className={styles.dashboardPage}>

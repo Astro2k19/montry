@@ -18,7 +18,8 @@ export const Login = () => {
     isReadRules: false,
   });
   const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((state) => state.auth);
+  const { status, error, authUser } = useAppSelector((state) => state.auth);
+  const { isSetupAccount } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,10 +47,14 @@ export const Login = () => {
   };
 
   React.useEffect(() => {
+    if (authUser && isSetupAccount) navigate("/dashboard", { replace: true });
+  }, []);
+
+  React.useEffect(() => {
     if (status === "success") {
       navigate("/dashboard", { replace: true });
     }
-  });
+  }, [status]);
 
   return (
     <>

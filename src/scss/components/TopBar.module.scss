@@ -3,6 +3,7 @@
   padding: 16px 0;
   align-items: center;
   color: $black;
+  gap:15%;
 
   &.white {
     color: $white;
@@ -23,7 +24,6 @@
 }
 
 .barText {
-  flex: 1 1 auto;
   font-weight: 600;
   font-size: 18px;
   color: inherit;

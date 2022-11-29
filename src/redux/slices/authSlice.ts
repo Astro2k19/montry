@@ -4,13 +4,14 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase.config";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import firebase from "firebase/compat";
+import onLog = firebase.onLog;
 
 type SignInStatus = "loading" | "success" | "error" | "initial";
 
 interface IInitialUserState {
   authUser: IAuthUser | null;
-  isSetupAccount: boolean;
   status: SignInStatus;
   error: string;
 }
@@ -51,7 +52,7 @@ export const signUpNewUser = createAsyncThunk(
   }
 );
 
-const LogInUserWithGoogle = createAsyncThunk("auth/loguser", async () => {});
+const LogInUserWithGoogle = createAsyncThunk("auth/logUser", async () => {});
 
 export const LogInUserWithCredentials = createAsyncThunk(
   "auth/logUser",
@@ -69,7 +70,6 @@ const initialState: IInitialUserState = {
     uid: "asdfsdfsdaf34234",
     email: "asdfasdf@gmail.com",
   },
-  isSetupAccount: false,
   status: "initial",
   error: "",
 };
