@@ -4,9 +4,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase.config";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import firebase from "firebase/compat";
-import onLog = firebase.onLog;
+import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 
 type SignInStatus = "loading" | "success" | "error" | "initial";
 
@@ -43,6 +41,7 @@ export const signUpNewUser = createAsyncThunk(
         email,
         isSetup: false,
         balance: 0,
+        wallets: [],
       });
 
       return userData;
@@ -56,9 +55,14 @@ const LogInUserWithGoogle = createAsyncThunk("auth/logUser", async () => {});
 
 export const LogInUserWithCredentials = createAsyncThunk(
   "auth/logUser",
-  async ({ email, password }: INewUser, thunkAPI) => {
+  async ({ passedEmail, password }: INewUser, thunkAPI) => {
     try {
-      return await signInWithEmailAndPassword(auth, email, password);
+      const {
+        user: { uid, email },
+      } = await signInWithEmailAndPassword(auth, passedEmail, password);
+      const userData = await getDoc(doc(db, "users", uid));
+
+      return { uid, email, isSetup: userData.data().isSetup };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -66,10 +70,7 @@ export const LogInUserWithCredentials = createAsyncThunk(
 );
 
 const initialState: IInitialUserState = {
-  authUser: {
-    uid: "asdfsdfsdaf34234",
-    email: "asdfasdf@gmail.com",
-  },
+  authUser: null,
   status: "initial",
   error: "",
 };
@@ -94,13 +95,10 @@ const authSlice = createSlice({
       .addCase(signUpNewUser.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(signUpNewUser.fulfilled, (state, { payload }) => {
+      .addCase(signUpNewUser.fulfilled, (state, action) => {
         state.status = "success";
         state.error = "";
-        state.authUser = {
-          uid: payload?.user.uid,
-          email: payload?.user.email,
-        };
+        state.authUser = action.payload;
       })
       .addCase(signUpNewUser.rejected, (state, action) => {
         state.status = "error";
@@ -114,8 +112,8 @@ const authSlice = createSlice({
         state.status = "success";
         state.error = "";
         state.authUser = {
-          uid: payload?.user.uid,
-          email: payload?.user.email,
+          uid: payload.uid,
+          email: payload.email,
         };
       })
       .addCase(LogInUserWithCredentials.rejected, (state, action) => {

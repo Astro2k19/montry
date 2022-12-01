@@ -17,11 +17,14 @@ const initialState: IInitialSetupState = {
 export const updateUserSetup = createAsyncThunk(
   "auth/updateUserSetup",
   async ({ uid, data }) => {
+    debugger;
     const userRefDoc = doc(db, "users", uid);
     try {
       await updateDoc(userRefDoc, {
         ...data,
       });
+
+      console.log(data);
 
       return data;
     } catch (error) {
@@ -41,10 +44,7 @@ const setupSlice = createSlice({
       })
       .addCase(updateUserSetup.fulfilled, (state, action) => {
         state.status = "success";
-        return {
-          ...state,
-          ...action.payload,
-        };
+        state.isSetupAccount = action.payload.isSetup;
       })
       .addCase(updateUserSetup.rejected, (state, action) => {
         state.status = "error";
