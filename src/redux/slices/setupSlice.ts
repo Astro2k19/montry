@@ -17,7 +17,6 @@ const initialState: IInitialSetupState = {
 export const updateUserSetup = createAsyncThunk(
   "auth/updateUserSetup",
   async ({ uid, data }) => {
-    debugger;
     const userRefDoc = doc(db, "users", uid);
     try {
       await updateDoc(userRefDoc, {

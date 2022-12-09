@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@styles/routes/Starter.module.scss";
 import { motion } from "framer-motion";
-import { Button } from "@components/Button";
+import { Button } from "@/components/ui/Button";
 import { useNavigate } from "react-router";
 
 export const LaunchScreen: React.FC = () => {

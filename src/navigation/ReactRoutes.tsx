@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, useLocation } from "react-router-dom";
 import { Route } from "react-router";
-import { LaunchScreen } from "../routes/Onboarding/LaunchScreen";
-import { Auth } from "../routes/Onboarding/Auth";
-import { ErrorPage } from "../routes/ErrorPage";
-import { Login } from "../routes/Onboarding/Auth/Login";
-import { SignUp } from "../routes/Onboarding/Auth/SignUp";
+import { LaunchScreen } from "../routes/LaunchScreen";
+import { Auth } from "../routes/Auth";
+import { ErrorPage } from "./ErrorPage";
+import { LoginPage } from "../routes/Auth/LoginPage";
+import { SignUpPage } from "../routes/Auth/SignUpPage";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Dashboard from "../routes/Dashboard";
 import Home from "../routes/Dashboard/Home";
@@ -35,8 +35,8 @@ const ReactRoutes = () => {
         element={<Auth />}
         errorElement={<ErrorPage />}
       />
-      <Route path={LOGIN_SCREEN} element={<Login />} />
-      <Route path={SIGNUP_SCREEN} element={<SignUp />} />
+      <Route path={LOGIN_SCREEN} element={<LoginPage />} />
+      <Route path={SIGNUP_SCREEN} element={<SignUpPage />} />
       <Route element={<ProtectedRoutes />}>
         <Route
           path={DASHBOARD_SCREEN}

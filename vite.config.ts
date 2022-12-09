@@ -7,10 +7,13 @@ export default defineConfig({
     plugins: [react()],
     resolve: {
         alias: {
+            '@': path.resolve(__dirname, './src'),
             '@styles': path.resolve(__dirname, './src/scss'),
             '@assets': path.resolve(__dirname, './src/assets'),
             '@components': path.resolve(__dirname, './src/components'),
             '@routes': path.resolve(__dirname, './src/routes'),
+            '@navigation': path.resolve(__dirname, './src/navigation'),
+            '@redux': path.resolve(__dirname, './src/redux'),
         }
     },
     css: {

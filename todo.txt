@@ -1,6 +1,6 @@
 Starter page
 Auth page
-Login page
+LoginPage page
 Sign up page
     SetupAccount page
 

@@ -6,25 +6,8 @@ import {
 import { auth, db } from "../../firebase/firebase.config";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { getUserSetup } from "./setupSlice";
+import {IInitialUserState, INewUser} from "@/redux/interfaces";
 
-type SignInStatus = "loading" | "success" | "error" | "initial";
-
-interface IInitialUserState {
-  authUser: IAuthUser | null;
-  status: SignInStatus;
-  error: string;
-}
-
-interface IAuthUser {
-  email: string;
-  uid: string;
-}
-
-interface INewUser {
-  email: string;
-  name?: string;
-  password: string;
-}
 
 export const signUpNewUser = createAsyncThunk(
   "auth/newUser",
@@ -45,7 +28,7 @@ export const signUpNewUser = createAsyncThunk(
         wallets: [],
       });
 
-      return userData;
+      return {email, uid: userData.user.uid};
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "@styles/routes/SetupAccount.module.scss";
-import { TopBar, TopBarTypes } from "@components/TopBar";
-import BottomPanel from "@components/BottomPanel";
-import { InputGroup } from "@components/InputGroup";
-import { DataInput } from "@components/DataInput";
-import { Button, ButtonType } from "@components/Button";
-import CashInput from "@components/CashInput";
+import {selectStyles} from "@/scss/components/SelectStyles";
+import { TopBar, TopBarTypes } from "@/navigation/components/TopBar";
+import BottomPanel from "@/components/ui/BottomPanel";
+import { InputGroup } from "@/components/ui/InputGroup";
+import { DataInput } from "@/components/form/DataInput";
+import { Button, ButtonType } from "@/components/ui/Button";
+import CashInput from "@/components/form/CashInput";
 import { NumberFormatValues } from "react-number-format";
 import Select from "react-select";
 import {
@@ -13,12 +14,11 @@ import {
   InputActionMeta,
   OnChangeValue,
 } from "react-select/dist/declarations/src/types";
-import { SourceInfo } from "react-number-format/types/types";
 import { doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
-import { db } from "../../firebase/firebase.config";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { db } from "@/firebase/firebase.config";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { nanoid } from "@reduxjs/toolkit";
-import { updateUserSetup } from "../../redux/slices/setupSlice";
+import { updateUserSetup } from "@/redux/slices/setupSlice";
 import { useNavigate } from "react-router";
 
 const options = [
@@ -26,29 +26,6 @@ const options = [
   { value: "strawberry", label: "Strawberry" },
   { value: "vanilla", label: "Vanilla" },
 ];
-
-const selectStyles = {
-  control: (baseStyles, state) => ({
-    ...baseStyles,
-    borderRadius: "16px",
-    borderColor: state.isFocused ? "#91919F" : "#F1F1FA",
-    borderWidth: "2px",
-    boxShadow: "none",
-    minHeight: "50px",
-  }),
-  indicatorSeparator: (baseStyles, state) => ({
-    display: "none",
-  }),
-  input: (baseStyles, state) => ({
-    ...baseStyles,
-    color: "#91919F",
-  }),
-  menu: (baseStyles, state) => ({
-    ...baseStyles,
-    borderRadius: "16px",
-    overflow: "hidden",
-  }),
-};
 
 const SetupNewAccount = () => {
   const [setupState, setSetupState] = React.useState({
@@ -155,7 +132,7 @@ const SetupNewAccount = () => {
       <div className={styles.setupBlock}>
         <CashInput
           title={"Balance"}
-          placeholder={"00.0"}
+          placeholder={setupState.balance}
           changeHandler={onCashInputChange}
           name={"balance"}
         />
@@ -181,13 +158,11 @@ const SetupNewAccount = () => {
               text={"Save and create another one"}
               type={ButtonType.VIOLET}
               clickHandler={saveAndAddNewWallet}
-              style={{ marginTop: "15px" }}
             />
             <Button
               text={"Save and finish setup"}
               type={ButtonType.VIOLET}
               clickHandler={saveAndFinishSetup}
-              style={{ marginTop: "15px" }}
             />
           </InputGroup>
         </BottomPanel>
