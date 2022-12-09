@@ -1,4 +1,4 @@
-import { TopBar, TopBarTypes } from "../../../components/TopBar";
+import { TopBar, TopBarTypes } from "../../../navigation/components/TopBar";
 import React from "react";
 import styles from "@styles/routes/EntryForm.module.scss";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ export const Login = () => {
   });
   const dispatch = useAppDispatch();
   const { status, error, authUser } = useAppSelector((state) => state.auth);
-  const { isSetupAccount } = useAppSelector((state) => state.setup);
+  const { isSetup } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export const Login = () => {
   };
 
   React.useEffect(() => {
-    if (authUser && isSetupAccount) navigate("/dashboard", { replace: true });
+    if (authUser && isSetup) navigate("/dashboard", { replace: true });
   }, []);
 
   React.useEffect(() => {

@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase.config";
 
 interface IInitialSetupState {
-  isSetupAccount: false;
+  isSetup: false;
   balance: number | string;
   status: string;
 }
 
 const initialState: IInitialSetupState = {
-  isSetupAccount: false,
+  isSetup: false,
   balance: 0,
   status: "",
 };
@@ -24,9 +24,21 @@ export const updateUserSetup = createAsyncThunk(
         ...data,
       });
 
-      console.log(data);
-
       return data;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+);
+
+export const getUserSetup = createAsyncThunk(
+  "auth/getUserSetup",
+  async ({ uid }) => {
+    const userRefDoc = doc(db, "users", uid);
+    try {
+      const userData = await getDoc(userRefDoc);
+
+      return userData.data();
     } catch (error) {
       console.log(error.message);
     }
@@ -44,10 +56,17 @@ const setupSlice = createSlice({
       })
       .addCase(updateUserSetup.fulfilled, (state, action) => {
         state.status = "success";
-        state.isSetupAccount = action.payload.isSetup;
+        state.isSetup = action.payload.isSetup;
       })
       .addCase(updateUserSetup.rejected, (state, action) => {
         state.status = "error";
+      })
+      .addCase(getUserSetup.fulfilled, (state, action) => {
+        Object.entries(action.payload).forEach(([key, value]) => {
+          if (state.hasOwnProperty(key)) {
+            state[key] = value;
+          }
+        });
       });
   },
 });

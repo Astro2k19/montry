@@ -6,7 +6,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router";
 
 const Dashboard = () => {
-  const { isSetupAccount } = useAppSelector((state) => state.setup);
+  const { isSetup } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
   return (

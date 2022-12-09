@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase.config";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { getUserSetup } from "./setupSlice";
 
 type SignInStatus = "loading" | "success" | "error" | "initial";
 
@@ -55,14 +56,15 @@ const LogInUserWithGoogle = createAsyncThunk("auth/logUser", async () => {});
 
 export const LogInUserWithCredentials = createAsyncThunk(
   "auth/logUser",
-  async ({ passedEmail, password }: INewUser, thunkAPI) => {
+  async ({ email: passedEmail, password }: INewUser, thunkAPI) => {
+    console.log(passedEmail, password);
     try {
       const {
         user: { uid, email },
       } = await signInWithEmailAndPassword(auth, passedEmail, password);
-      const userData = await getDoc(doc(db, "users", uid));
+      thunkAPI.dispatch(getUserSetup({ uid }));
 
-      return { uid, email, isSetup: userData.data().isSetup };
+      return { uid, email };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

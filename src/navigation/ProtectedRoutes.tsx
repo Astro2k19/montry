@@ -10,17 +10,17 @@ const ProtectedRoutes: React.FC<IProtectedRoutesProps> = ({
   requireSetup = true,
 }) => {
   const { authUser } = useAppSelector((state) => state.auth);
-  const { isSetupAccount } = useAppSelector((state) => state.setup);
+  const { isSetup } = useAppSelector((state) => state.setup);
 
   if (!authUser) return <Navigate to={"/login"} replace={true} />;
 
   return requireSetup ? (
-    isSetupAccount ? (
+    isSetup ? (
       <Outlet />
     ) : (
       <Navigate to={"/setup-account"} replace={true} />
     )
-  ) : !isSetupAccount ? (
+  ) : !isSetup ? (
     <Outlet />
   ) : (
     <Navigate to={"/dashboard"} replace={true} />

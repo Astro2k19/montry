@@ -1,5 +1,5 @@
 import React from "react";
-import { TopBar, TopBarTypes } from "../../../components/TopBar";
+import { TopBar, TopBarTypes } from "../../../navigation/components/TopBar";
 import { DataInput } from "@components/DataInput";
 import { InputGroup } from "@components/InputGroup";
 import styles from "@styles/routes/EntryForm.module.scss";
@@ -24,7 +24,7 @@ export const SignUp = () => {
   });
   const dispatch = useAppDispatch();
   const { status, error, authUser } = useAppSelector((state) => state.auth);
-  const { isSetupAccount } = useAppSelector((state) => state.setup);
+  const { isSetup } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ export const SignUp = () => {
   const signUpWithGoogleAcc = () => {};
 
   React.useEffect(() => {
-    if (authUser && isSetupAccount) navigate("/dashboard", { replace: true });
+    if (authUser && isSetup) navigate("/dashboard", { replace: true });
   }, []);
 
   React.useEffect(() => {
@@ -107,7 +107,7 @@ export const SignUp = () => {
                 onChange={onChange}
               />
               <p>
-                By signing up, you agree to the{" "}
+                By signing up, you agree to the
                 <a href="#">Terms of Service and Privacy Policy</a>
               </p>
             </div>
