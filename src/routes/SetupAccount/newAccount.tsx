@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "@styles/routes/SetupAccount.module.scss";
-import {selectStyles} from "@/scss/components/SelectStyles";
+import { selectStyles } from "@/scss/components/SelectStyles";
 import { TopBar, TopBarTypes } from "@/navigation/components/TopBar";
 import BottomPanel from "@/components/ui/BottomPanel";
 import { InputGroup } from "@/components/ui/InputGroup";
@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { nanoid } from "@reduxjs/toolkit";
 import { updateUserSetup } from "@/redux/slices/setupSlice";
 import { useNavigate } from "react-router";
+// import { useSaveNewWalletMutation } from "@/redux/api/apiSetup";
 
 const options = [
   { value: "bank", label: "Bank" },
@@ -37,7 +38,10 @@ const SetupNewAccount = () => {
     typeValue: options[0].value,
   });
 
+  const useSaveNewWalletMutation = () => {};
+
   const { authUser } = useAppSelector((state) => state.auth);
+  const [saveNewWallet, { isLoading }] = useSaveNewWalletMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -71,23 +75,15 @@ const SetupNewAccount = () => {
   };
 
   const addWallet = async () => {
-    const userRef = doc(db, "users", authUser.uid);
-
-    try {
-      await updateDoc(userRef, {
-        wallets: arrayUnion({
-          id: nanoid(),
-          name: setupState.name,
-          type: selectState.typeValue,
-          balance: Number(setupState.balance),
-        }),
-        balance: increment(Number(setupState.balance)),
-      });
-    } catch (e) {
-      alert(e);
+    if (setupState.name && setupState.balance) {
+      const wallet = {
+        name: setupState.name,
+        type: selectState.typeValue,
+        balance: setupState.balance,
+      };
+      await saveNewWallet({ wallet, authUser });
+      clearStates();
     }
-
-    clearStates();
   };
 
   const saveAndFinishSetup = async () => {

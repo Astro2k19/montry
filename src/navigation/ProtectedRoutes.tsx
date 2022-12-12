@@ -9,8 +9,7 @@ interface IProtectedRoutesProps {
 const ProtectedRoutes: React.FC<IProtectedRoutesProps> = ({
   requireSetup = true,
 }) => {
-  const { authUser } = useAppSelector((state) => state.auth);
-  const { isSetup } = useAppSelector((state) => state.setup);
+  const { authUser, isSetup } = useAppSelector((state) => state.auth);
 
   if (!authUser) return <Navigate to={"/login"} replace={true} />;
 

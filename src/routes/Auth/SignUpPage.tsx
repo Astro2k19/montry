@@ -5,40 +5,29 @@ import styles from "@styles/routes/EntryForm.module.scss";
 import Loader from "@/components/ui/Loader";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useNavigate } from "react-router-dom";
-import {SignUpForm} from "@/routes/Auth/components/SignUpForm";
+import { SignUpForm } from "@/routes/Auth/components/SignUpForm";
+import {
+  useGetSpecificUserFieldQuery,
+  useSignUpNewUserMutation,
+} from "@/redux/api/apiSlice";
 
 export const SignUpPage = () => {
-  const { status, error, authUser } = useAppSelector((state) => state.auth);
-  const { isSetup } = useAppSelector((state) => state.setup);
+  const { authUser, isSetup } = useAppSelector((state) => state.auth);
+  // const { isSetup } = useAppSelector((state) => state.setup);
+  // const isSetup = false;
+  // const { data } = useGetSpecificUserFieldQuery("isSetup", authUser?.uid ?? 0);
+  // console.log(data);
   const navigate = useNavigate();
 
   React.useEffect(() => {
     if (authUser && isSetup) navigate("/dashboard", { replace: true });
-  }, []);
-
-  React.useEffect(() => {
-    if (status === "success") {
-      navigate("/setup-account");
-    }
-  }, [status]);
+  }, [isSetup]);
 
   return (
     <>
       <TopBar text={"Sign Up"} type={TopBarTypes.DARK} />
       <div className={styles.root}>
-        {status === "error" && <div>{error}</div>}
-
-        {status === "loading" ? (
-          <Loader />
-        ) : status === "success" ||
-          status === "initial" ||
-          status === "error" ? (
-          <>
-           <SignUpForm />
-          </>
-        ) : (
-          ""
-        )}
+        <SignUpForm />
       </div>
     </>
   );

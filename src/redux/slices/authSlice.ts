@@ -6,8 +6,7 @@ import {
 import { auth, db } from "../../firebase/firebase.config";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { getUserSetup } from "./setupSlice";
-import {IInitialUserState, INewUser} from "@/redux/interfaces";
-
+import { IInitialUserState, INewUser } from "@/redux/interfaces";
 
 export const signUpNewUser = createAsyncThunk(
   "auth/newUser",
@@ -28,7 +27,7 @@ export const signUpNewUser = createAsyncThunk(
         wallets: [],
       });
 
-      return {email, uid: userData.user.uid};
+      return { email, uid: userData.user.uid };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -56,8 +55,7 @@ export const LogInUserWithCredentials = createAsyncThunk(
 
 const initialState: IInitialUserState = {
   authUser: null,
-  status: "initial",
-  error: "",
+  isSetup: false,
 };
 
 const authSlice = createSlice({
@@ -65,7 +63,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.authUser = action.payload;
+      state.authUser = { email: action.payload.email, uid: action.payload.uid };
+      state.isSetup = action.payload.isSetup;
     },
     clearUser(state) {
       state.authUser = null;
@@ -77,19 +76,6 @@ const authSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(signUpNewUser.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(signUpNewUser.fulfilled, (state, action) => {
-        state.status = "success";
-        state.error = "";
-        state.authUser = action.payload;
-      })
-      .addCase(signUpNewUser.rejected, (state, action) => {
-        state.status = "error";
-        state.error = action.payload as string;
-      })
-
       .addCase(LogInUserWithCredentials.pending, (state, action) => {
         state.status = "loading";
       })
