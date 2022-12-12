@@ -14,13 +14,13 @@ import {
   InputActionMeta,
   OnChangeValue,
 } from "react-select/dist/declarations/src/types";
-import { doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.config";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { nanoid } from "@reduxjs/toolkit";
 import { updateUserSetup } from "@/redux/slices/setupSlice";
 import { useNavigate } from "react-router";
-// import { useSaveNewWalletMutation } from "@/redux/api/apiSetup";
+import {useSaveNewWalletMutation} from "@/redux/api/apiSetup";
+import {useGetSpecificUserFieldQuery} from "@/redux/api/apiSlice";
 
 const options = [
   { value: "bank", label: "Bank" },
@@ -38,12 +38,17 @@ const SetupNewAccount = () => {
     typeValue: options[0].value,
   });
 
-  const useSaveNewWalletMutation = () => {};
-
   const { authUser } = useAppSelector((state) => state.auth);
   const [saveNewWallet, { isLoading }] = useSaveNewWalletMutation();
+  const {data: wallets = []} = useGetSpecificUserFieldQuery({fieldName: 'wallets', uid: authUser?.uid});
+  console.log(useGetSpecificUserFieldQuery)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+
+  console.log('wallets', wallets)
+  console.log('uid', authUser?.uid)
+
 
   const onChangeSelect = (
     newValue: OnChangeValue<Option, IsMulti>,
@@ -86,7 +91,7 @@ const SetupNewAccount = () => {
     }
   };
 
-  const saveAndFinishSetup = async () => {
+  const finishSetup = async () => {
     const userRef = doc(db, "users", authUser.uid);
     await addWallet();
 
@@ -151,14 +156,15 @@ const SetupNewAccount = () => {
               }}
             />
             <Button
-              text={"Save and create another one"}
+              text={"Add wallet"}
               type={ButtonType.VIOLET}
               clickHandler={saveAndAddNewWallet}
             />
             <Button
-              text={"Save and finish setup"}
+              text={"Finish setup"}
               type={ButtonType.VIOLET}
-              clickHandler={saveAndFinishSetup}
+              clickHandler={finishSetup}
+              disabled={wallets.length > 0}
             />
           </InputGroup>
         </BottomPanel>

@@ -55,7 +55,6 @@ export const LogInUserWithCredentials = createAsyncThunk(
 
 const initialState: IInitialUserState = {
   authUser: null,
-  isSetup: false,
 };
 
 const authSlice = createSlice({
@@ -63,8 +62,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.authUser = { email: action.payload.email, uid: action.payload.uid };
-      state.isSetup = action.payload.isSetup;
+      Object.entries(action.payload).forEach(([key, value]) => {
+        if (state.authUser === null) {
+          state.authUser = {};
+        }
+
+        state.authUser[key] = value;
+      })
     },
     clearUser(state) {
       state.authUser = null;

@@ -2,14 +2,12 @@ export type SignInStatus = "loading" | "success" | "error" | "initial";
 
 export interface IInitialUserState {
   authUser: IAuthUser | null;
-  isSetup: boolean;
-  status: SignInStatus;
-  error: string;
 }
 
 export interface IAuthUser {
   email: string;
   uid: string;
+  isSetup: boolean;
 }
 
 export interface INewUser {

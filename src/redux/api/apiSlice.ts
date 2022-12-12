@@ -4,8 +4,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "@/firebase/firebase.config";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {arrayUnion, doc, getDoc, increment, setDoc, updateDoc} from "firebase/firestore";
 import { setUser } from "@/redux/slices/authSlice";
+import {nanoid} from "@reduxjs/toolkit";
 
 const initialSignupUserState = (name: string, email: string) => ({
   name,
@@ -16,10 +17,9 @@ const initialSignupUserState = (name: string, email: string) => ({
 });
 
 export const apiSlice = createApi({
-  reducerPath: "api",
   baseQuery: fakeBaseQuery(),
-  endpoints: (builder) => ({
-    signUpNewUser: builder.mutation({
+  endpoints: (build) => ({
+    signUpNewUser: build.mutation({
       async queryFn({ email, name, password, dispatch }) {
         try {
           const userData = await createUserWithEmailAndPassword(
@@ -42,29 +42,47 @@ export const apiSlice = createApi({
         }
       },
     }),
-    logInUserWithCredentials: builder.mutation({
-      async queryFn({ passedEmail, password }) {
+    logInUserWithCredentials: build.mutation({
+      async queryFn({ email: passedEmail, password, dispatch }) {
         try {
+          console.log(passedEmail)
           const {
             user: { uid, email },
           } = await signInWithEmailAndPassword(auth, passedEmail, password);
 
-          return { uid, email };
+          const userRefDoc = doc(db, "users", uid);
+          const userData = await getDoc(userRefDoc);
+          console.log(userData.data(), 'user data from firebase for isSetup')
+
+          dispatch(
+              setUser({
+                uid,
+                email,
+                isSetup: userData.data()?.isSetup ?? false
+              })
+          );
+
+          return {
+            data: ''
+          };
+
         } catch (error) {
           return { error };
         }
       },
     }),
-    getSpecificUserField: builder.query({
+    getSpecificUserField: build.query({
       async queryFn({ fieldName, uid }) {
+        debugger
         try {
           const docRef = doc(db, "users", uid);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
             const data = docSnap.data();
-            console.log(data);
-            return { data };
+
+            console.log(data)
+            return { data: data[fieldName] };
           }
         } catch (error) {
           return { error };

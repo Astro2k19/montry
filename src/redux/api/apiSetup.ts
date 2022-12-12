@@ -18,6 +18,7 @@ export const apiSetup = apiSlice.injectEndpoints({
             }),
             balance: increment(Number(wallet.balance)),
           });
+          return {data: ''};
         } catch (error) {
           return { error };
         }

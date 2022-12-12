@@ -10,9 +10,10 @@ import {
   useGetSpecificUserFieldQuery,
   useSignUpNewUserMutation,
 } from "@/redux/api/apiSlice";
+import {DASHBOARD_SCREEN} from "@/navigation/CONSTANTS";
 
 export const SignUpPage = () => {
-  const { authUser, isSetup } = useAppSelector((state) => state.auth);
+  const { authUser } = useAppSelector((state) => state.auth);
   // const { isSetup } = useAppSelector((state) => state.setup);
   // const isSetup = false;
   // const { data } = useGetSpecificUserFieldQuery("isSetup", authUser?.uid ?? 0);
@@ -20,8 +21,8 @@ export const SignUpPage = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (authUser && isSetup) navigate("/dashboard", { replace: true });
-  }, [isSetup]);
+    if (authUser && authUser.isSetup) navigate(DASHBOARD_SCREEN, { replace: true });
+  }, [authUser]);
 
   return (
     <>

@@ -1,13 +1,14 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "@/redux/hooks";
-import {LogInUserWithCredentials} from "@/redux/slices/authSlice";
 import {DataInput} from "@/components/form/DataInput";
 import {Button, ButtonType} from "@/components/ui/Button";
 import {InputGroup} from "@/components/ui/InputGroup";
 import styles from "@styles/routes/EntryForm.module.scss";
 import {onChange} from "../utils";
-import {SIGNUP_SCREEN} from "@/navigation/CONSTANTS";
+import {SETUP_ACCOUNT_SCREEN, SIGNUP_SCREEN} from "@/navigation/CONSTANTS";
+import {useLogInUserWithCredentialsMutation} from "@/redux/api/apiSlice";
+import Loader from "@/components/ui/Loader";
 
 export const LoginForm = () => {
     const [formData, setFormData] = React.useState({
@@ -16,19 +17,33 @@ export const LoginForm = () => {
         password: "",
         isReadRules: false,
     });
+    const [logInUserWithCredentials, {isSuccess, isLoading, isError, error}] = useLogInUserWithCredentialsMutation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const logInUser = async () => {
-        dispatch(
-            LogInUserWithCredentials({
+        if (formData.email && formData.password) {
+            logInUserWithCredentials({
                 email: formData.email,
                 password: formData.password,
-            })
-        );
+                dispatch
+            });
+        }
     };
 
-    return (
+    console.log(isLoading)
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            navigate(SETUP_ACCOUNT_SCREEN);
+        }
+    }, [isSuccess]);
+
+    return isLoading ? (
+        <Loader/>
+    ) : (
         <>
+            {isError && <p>{error.message}</p>}
             <InputGroup>
                 <DataInput
                     handleOnChange={(event) => onChange(event, setFormData)}
@@ -45,7 +60,7 @@ export const LoginForm = () => {
                     name={"password"}
                 />
                 <Button
-                    text={"LoginForm"}
+                    text={"Login"}
                     type={ButtonType.VIOLET}
                     clickHandler={logInUser}
                 />
@@ -54,5 +69,5 @@ export const LoginForm = () => {
                 Don’t have an account yet? <Link to={SIGNUP_SCREEN}> Sign Up </Link>
             </p>
         </>
-    )
+    );
 }
