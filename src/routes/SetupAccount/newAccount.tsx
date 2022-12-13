@@ -19,7 +19,7 @@ import { db } from "@/firebase/firebase.config";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateUserSetup } from "@/redux/slices/setupSlice";
 import { useNavigate } from "react-router";
-import {useSaveNewWalletMutation} from "@/redux/api/apiSetup";
+import {useSaveNewWalletMutation, useUpdateUserDataMutation} from "@/redux/api/apiSetup";
 import {useGetSpecificUserFieldQuery} from "@/redux/api/apiSlice";
 
 const options = [
@@ -40,15 +40,10 @@ const SetupNewAccount = () => {
 
   const { authUser } = useAppSelector((state) => state.auth);
   const [saveNewWallet, { isLoading }] = useSaveNewWalletMutation();
+  const [updateUserData, { isLoading: isLoadingUpdates }] = useUpdateUserDataMutation()
   const {data: wallets = []} = useGetSpecificUserFieldQuery({fieldName: 'wallets', uid: authUser?.uid});
-  console.log(useGetSpecificUserFieldQuery)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-
-  console.log('wallets', wallets)
-  console.log('uid', authUser?.uid)
-
 
   const onChangeSelect = (
     newValue: OnChangeValue<Option, IsMulti>,
@@ -86,29 +81,23 @@ const SetupNewAccount = () => {
         type: selectState.typeValue,
         balance: setupState.balance,
       };
-      await saveNewWallet({ wallet, authUser });
+      await saveNewWallet({ wallet, uid: authUser?.uid });
       clearStates();
     }
   };
 
   const finishSetup = async () => {
-    const userRef = doc(db, "users", authUser.uid);
-    await addWallet();
-
-    try {
-      await dispatch(
-        updateUserSetup({
-          uid: authUser.uid,
-          data: {
-            isSetup: true,
-          },
-        })
-      );
-
-      navigate("/dashboard");
-    } catch (e) {
-      alert(e);
+    const data = {
+      isSetup: true
     }
+
+    const params = {
+      uid: authUser?.uid,
+      data,
+      providedTags: ['setup']
+    }
+
+    await updateUserData(params);
   };
 
   const saveAndAddNewWallet = async () => {
@@ -164,7 +153,7 @@ const SetupNewAccount = () => {
               text={"Finish setup"}
               type={ButtonType.VIOLET}
               clickHandler={finishSetup}
-              disabled={wallets.length > 0}
+              disabled={wallets.length === 0}
             />
           </InputGroup>
         </BottomPanel>

@@ -1,5 +1,3 @@
-export type SignInStatus = "loading" | "success" | "error" | "initial";
-
 export interface IInitialUserState {
   authUser: IAuthUser | null;
 }
@@ -14,4 +12,11 @@ export interface INewUser {
   email: string;
   name?: string;
   password: string;
+}
+
+export interface IWallet {
+  balance: number;
+  id: string;
+  name: string;
+  type: string;
 }

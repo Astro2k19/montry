@@ -6,13 +6,17 @@ import { useNavigate } from "react-router";
 import Loader from "@/components/ui/Loader";
 import {LoginForm} from "@/routes/Auth/components/LoginForm";
 import {DASHBOARD_SCREEN} from "@/navigation/CONSTANTS";
+import {useIsUserSetupQuery} from "@/redux/api/apiSetup";
 
 export const LoginPage = () => {
   const { authUser } = useAppSelector((state) => state.auth);
+  const {data: isSetup} = useIsUserSetupQuery({uid: authUser?.uid});
   const navigate = useNavigate();
 
+    console.log('login page, is setup', isSetup);
+
   React.useEffect(() => {
-    if (authUser && authUser.isSetup) navigate(DASHBOARD_SCREEN, { replace: true });
+    if (authUser && isSetup) navigate(DASHBOARD_SCREEN, { replace: true });
   }, []);
 
   return (

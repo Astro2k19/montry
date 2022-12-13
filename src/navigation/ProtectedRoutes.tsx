@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
+import {useIsUserSetupQuery} from "@/redux/api/apiSetup";
 
 interface IProtectedRoutesProps {
   requireSetup?: boolean;
@@ -13,13 +14,22 @@ const ProtectedRoutes: React.FC<IProtectedRoutesProps> = ({
 
   if (!authUser) return <Navigate to={"/login"} replace={true} />;
 
+  const {data: isSetup, isLoading} = useIsUserSetupQuery({uid: authUser?.uid});
+
+  console.log('protected route, is setup', isSetup);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+
   return requireSetup ? (
-      authUser.isSetup ? (
+      isSetup ? (
       <Outlet />
     ) : (
       <Navigate to={"/setup-account"} replace={true} />
     )
-  ) : !authUser.isSetup ? (
+  ) : !isSetup ? (
     <Outlet />
   ) : (
     <Navigate to={"/dashboard"} replace={true} />

@@ -18,6 +18,7 @@ const initialSignupUserState = (name: string, email: string) => ({
 
 export const apiSlice = createApi({
   baseQuery: fakeBaseQuery(),
+  tagTypes: ['wallets', 'setup'],
   endpoints: (build) => ({
     signUpNewUser: build.mutation({
       async queryFn({ email, name, password, dispatch }) {
@@ -37,6 +38,14 @@ export const apiSlice = createApi({
               isSetup: false,
             })
           );
+
+          return {
+            data:{
+              uid: userData.user.uid,
+              email,
+              isSetup: false,
+            }
+          }
         } catch (error) {
           return { error };
         }
@@ -45,49 +54,46 @@ export const apiSlice = createApi({
     logInUserWithCredentials: build.mutation({
       async queryFn({ email: passedEmail, password, dispatch }) {
         try {
-          console.log(passedEmail)
           const {
             user: { uid, email },
           } = await signInWithEmailAndPassword(auth, passedEmail, password);
 
           const userRefDoc = doc(db, "users", uid);
           const userData = await getDoc(userRefDoc);
-          console.log(userData.data(), 'user data from firebase for isSetup')
 
           dispatch(
               setUser({
                 uid,
                 email,
-                isSetup: userData.data()?.isSetup ?? false
+                // isSetup: userData.data()?.isSetup ?? false
               })
           );
 
           return {
-            data: ''
+            data: userData.data()
           };
 
         } catch (error) {
           return { error };
         }
       },
+      invalidatesTags: ['setup']
     }),
     getSpecificUserField: build.query({
       async queryFn({ fieldName, uid }) {
-        debugger
         try {
           const docRef = doc(db, "users", uid);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
             const data = docSnap.data();
-
-            console.log(data)
             return { data: data[fieldName] };
           }
         } catch (error) {
           return { error };
         }
       },
+      providesTags: ((result, error, {fieldName}) => [fieldName])
     }),
   }),
 });
