@@ -4,9 +4,16 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "@/firebase/firebase.config";
-import {arrayUnion, doc, getDoc, increment, setDoc, updateDoc} from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { setUser } from "@/redux/slices/authSlice";
-import {nanoid} from "@reduxjs/toolkit";
+import { nanoid } from "@reduxjs/toolkit";
 
 const initialSignupUserState = (name: string, email: string) => ({
   name,
@@ -18,7 +25,7 @@ const initialSignupUserState = (name: string, email: string) => ({
 
 export const apiSlice = createApi({
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['wallets', 'setup'],
+  tagTypes: ["wallets", "setup"],
   endpoints: (build) => ({
     signUpNewUser: build.mutation({
       async queryFn({ email, name, password, dispatch }) {
@@ -34,25 +41,21 @@ export const apiSlice = createApi({
           dispatch(
             setUser({
               uid: userData.user.uid,
-              email,
-              isSetup: false,
             })
           );
 
           return {
-            data:{
+            data: {
               uid: userData.user.uid,
-              email,
-              isSetup: false,
-            }
-          }
+            },
+          };
         } catch (error) {
           return { error };
         }
       },
     }),
     logInUserWithCredentials: build.mutation({
-      async queryFn({ email: passedEmail, password, dispatch }) {
+      async queryFn({ email: passedEmail, password }) {
         try {
           const {
             user: { uid, email },
@@ -61,23 +64,21 @@ export const apiSlice = createApi({
           const userRefDoc = doc(db, "users", uid);
           const userData = await getDoc(userRefDoc);
 
-          dispatch(
-              setUser({
-                uid,
-                email,
-                // isSetup: userData.data()?.isSetup ?? false
-              })
-          );
-
           return {
-            data: userData.data()
+            data: uid,
           };
-
         } catch (error) {
           return { error };
         }
       },
-      invalidatesTags: ['setup']
+      async onCacheEntryAdded(arg, { cacheDataLoaded, dispatch }) {
+        try {
+          const { data: uid } = await cacheDataLoaded;
+
+          dispatch(setUser({ uid }));
+        } catch (error) {}
+      },
+      invalidatesTags: ["setup"],
     }),
     getSpecificUserField: build.query({
       async queryFn({ fieldName, uid }) {
@@ -93,7 +94,7 @@ export const apiSlice = createApi({
           return { error };
         }
       },
-      providesTags: ((result, error, {fieldName}) => [fieldName])
+      providesTags: (result, error, { fieldName }) => [fieldName],
     }),
   }),
 });

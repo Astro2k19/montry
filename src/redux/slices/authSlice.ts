@@ -68,7 +68,7 @@ const authSlice = createSlice({
         }
 
         state.authUser[key] = value;
-      })
+      });
     },
     clearUser(state) {
       state.authUser = null;

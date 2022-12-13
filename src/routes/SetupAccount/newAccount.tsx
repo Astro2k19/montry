@@ -14,13 +14,13 @@ import {
   InputActionMeta,
   OnChangeValue,
 } from "react-select/dist/declarations/src/types";
-import { doc } from "firebase/firestore";
-import { db } from "@/firebase/firebase.config";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { updateUserSetup } from "@/redux/slices/setupSlice";
 import { useNavigate } from "react-router";
-import {useSaveNewWalletMutation, useUpdateUserDataMutation} from "@/redux/api/apiSetup";
-import {useGetSpecificUserFieldQuery} from "@/redux/api/apiSlice";
+import {
+  useSaveNewWalletMutation,
+  useUpdateUserDataMutation,
+} from "@/redux/api/apiSetup";
+import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
 
 const options = [
   { value: "bank", label: "Bank" },
@@ -40,8 +40,12 @@ const SetupNewAccount = () => {
 
   const { authUser } = useAppSelector((state) => state.auth);
   const [saveNewWallet, { isLoading }] = useSaveNewWalletMutation();
-  const [updateUserData, { isLoading: isLoadingUpdates }] = useUpdateUserDataMutation()
-  const {data: wallets = []} = useGetSpecificUserFieldQuery({fieldName: 'wallets', uid: authUser?.uid});
+  const [updateUserData, { isLoading: isLoadingUpdates }] =
+    useUpdateUserDataMutation();
+  const { data: wallets = [] } = useGetSpecificUserFieldQuery({
+    fieldName: "wallets",
+    uid: authUser?.uid,
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -88,16 +92,14 @@ const SetupNewAccount = () => {
 
   const finishSetup = async () => {
     const data = {
-      isSetup: true
-    }
+      isSetup: true,
+    };
 
-    const params = {
+    await updateUserData({
       uid: authUser?.uid,
       data,
-      providedTags: ['setup']
-    }
-
-    await updateUserData(params);
+      providedTags: ["setup"],
+    });
   };
 
   const saveAndAddNewWallet = async () => {
@@ -116,13 +118,15 @@ const SetupNewAccount = () => {
     });
   };
 
+  console.log(setupState.balance);
+
   return (
     <div className={styles.root}>
       <TopBar text={"Add new wallet"} type={TopBarTypes.LIGHT} />
       <div className={styles.setupBlock}>
         <CashInput
           title={"Balance"}
-          placeholder={setupState.balance}
+          placeholder={"00.0"}
           changeHandler={onCashInputChange}
           name={"balance"}
         />
