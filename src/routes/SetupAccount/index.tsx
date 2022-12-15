@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonType } from "@/components/ui/Button";
 import { useNavigate } from "react-router";
 import styles from "@styles/routes/Setup.module.scss";
+import {SETUP_BALANCE_SCREEN} from "@/navigation/CONSTANTS";
 
 const SetupAccountIndex = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const SetupAccountIndex = () => {
       <Button
         text={"Let’s go"}
         type={ButtonType.VIOLET}
-        clickHandler={() => navigate("/setup-balance")}
+        clickHandler={() => navigate(SETUP_BALANCE_SCREEN)}
       />
     </div>
   );

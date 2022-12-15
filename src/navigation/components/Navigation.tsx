@@ -1,47 +1,56 @@
 import React from "react";
-import { AiOutlineHome, GrTransaction, CgProfile } from "react-icons/all";
-import { IconType } from "react-icons/lib";
+import { ReactComponent as HomeIcon } from "@assets/icons/Home.svg";
+import { ReactComponent as TransactionIcon } from "@assets/icons/transaction.svg";
+import { ReactComponent as UserIcon } from "@assets/icons/user.svg";
 import styles from "@styles/components/Navigation.module.scss";
 
-interface INavList {
+import { NavItem } from "@/navigation/components/NavItem";
+import { AddAccounts } from "@/navigation/components/AddAccounts";
+
+export interface INavItem {
   title: string;
-  icon: IconType;
+  icon: React.ReactNode;
   path: string;
 }
 
 const navList = [
   {
     title: "Home",
-    icon: <AiOutlineHome />,
+    icon: <HomeIcon />,
     path: "/home",
   },
   {
     title: "Transaction",
-    icon: <GrTransaction />,
+    icon: <TransactionIcon />,
     path: "/transactions",
   },
   {
     title: "Profile",
-    icon: <CgProfile />,
+    icon: <UserIcon />,
+    path: "/profile",
+  },
+  {
+    title: "Profile",
+    icon: <UserIcon />,
     path: "/profile",
   },
 ];
 
 const Navigation = () => {
-  const nav = navList.map((item) => {
-    return (
-      <li>
-        <button>
-          <div>{item.icon}</div>
-          <div>{item.title}</div>
-        </button>
-      </li>
-    );
-  });
+  const halfWayIndex = Math.ceil(navList.length / 2);
+  const leftPart = navList
+    .slice(0, halfWayIndex)
+    .map((item) => <NavItem {...item} />);
+
+  const rightPart = navList
+    .slice(halfWayIndex)
+    .map((item) => <NavItem {...item} />);
 
   return (
     <nav className={styles.nav}>
-      <ul>{nav}</ul>
+      <ul>{leftPart}</ul>
+      <AddAccounts />
+      <ul>{rightPart}</ul>
     </nav>
   );
 };
