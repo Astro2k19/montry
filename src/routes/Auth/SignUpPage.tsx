@@ -38,8 +38,6 @@ export const SignUpPage = () => {
     return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
   }
 
-  console.log(isSuccess);
-
   if (isSuccess) {
     return <Navigate to={SETUP_ACCOUNT_SCREEN} replace={true} />;
   }

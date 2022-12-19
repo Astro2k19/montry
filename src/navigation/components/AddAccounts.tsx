@@ -35,7 +35,7 @@ export const AddAccounts = () => {
       <motion.button
         className={styles.addAccounts}
         whileTap={{ scale: 0.97 }}
-        onClick={toggleButton}
+        onClick={() => setIsOpen((prevState) => !prevState)}
         initial={false}
         animate={isOpen ? "open" : "closed"}
       >

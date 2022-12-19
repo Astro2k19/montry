@@ -6,7 +6,7 @@ import {
   increment,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "@/firebase/firebase.config";
+import { db, uploadImage } from "@/firebase/firebase.config";
 import { nanoid } from "@reduxjs/toolkit";
 import { IWallet } from "@/redux/interfaces";
 
@@ -34,7 +34,7 @@ export const apiSetup = apiSlice.injectEndpoints({
       invalidatesTags: ["wallets"],
     }),
     updateUserData: builder.mutation({
-      async queryFn({ uid, data, providedTags = [] }) {
+      async queryFn({ uid, data, providedTags = [], test }) {
         const userRefDoc = doc(db, "users", uid);
         try {
           await updateDoc(userRefDoc, {
@@ -50,7 +50,6 @@ export const apiSetup = apiSlice.injectEndpoints({
     }),
     isUserSetup: builder.query({
       async queryFn({ uid }) {
-        // debugger;
         if (uid === null || uid === undefined) return { data: false };
 
         try {
@@ -69,6 +68,24 @@ export const apiSetup = apiSlice.injectEndpoints({
       },
       providesTags: ["setup"],
     }),
+    finishSetup: builder.mutation({
+      async queryFn({ uid, avatarPreview }) {
+        const userRefDoc = doc(db, "users", uid);
+        try {
+          const bucket = await uploadImage(avatarPreview, uid);
+
+          const data = await updateDoc(userRefDoc, {
+            isSetup: true,
+            imageUrl: bucket,
+          });
+
+          return { data };
+        } catch (error) {
+          return { error };
+        }
+      },
+      invalidatesTags: ["setup"],
+    }),
   }),
 });
 
@@ -76,4 +93,5 @@ export const {
   useSaveNewWalletMutation,
   useUpdateUserDataMutation,
   useIsUserSetupQuery,
+  useFinishSetupMutation,
 } = apiSetup;

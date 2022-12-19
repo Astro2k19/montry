@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { format } from "date-fns";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
@@ -16,3 +18,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth();
+export const storage = getStorage(app);
+
+const bucketUrl = "gs://montra-768a4.appspot.com";
+
+export const uploadImage = async (dataUrl: string, uid: string) => {
+  const bucket = `${bucketUrl}/${uid}/avatar.jpg`;
+  const storageRef = ref(storage, bucket);
+  await uploadString(storageRef, dataUrl, "data_url");
+  return bucket;
+};

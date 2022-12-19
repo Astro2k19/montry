@@ -11,17 +11,18 @@ import { NumberFormatValues } from "react-number-format";
 import Select from "react-select";
 import {
   ActionMeta,
-  InputActionMeta,
   OnChangeValue,
 } from "react-select/dist/declarations/src/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useNavigate } from "react-router";
 import {
   useSaveNewWalletMutation,
-  useUpdateUserDataMutation,
+  useFinishSetupMutation,
 } from "@/redux/api/apiSetup";
 import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
-import { SETUP_ACCOUNT_SCREEN } from "@/navigation/CONSTANTS";
+import { DASHBOARD_SCREEN, SETUP_ACCOUNT_SCREEN } from "@/navigation/CONSTANTS";
+import Loader from "@/components/ui/Loader";
+import { Navigate } from "react-router-dom";
 
 const options = [
   { value: "bank", label: "Bank" },
@@ -41,13 +42,14 @@ const SetupNewAccount = () => {
 
   const { authUser } = useAppSelector((state) => state.auth);
   const [saveNewWallet, { isLoading }] = useSaveNewWalletMutation();
-  const [updateUserData, { isLoading: isLoadingUpdates }] =
-    useUpdateUserDataMutation();
+  const [finishSetup, { isLoading: isLoadingFinishing, isSuccess }] =
+    useFinishSetupMutation();
   const { data: wallets = [] } = useGetSpecificUserFieldQuery({
     fieldName: "wallets",
     uid: authUser?.uid,
   });
   const dispatch = useAppDispatch();
+  const { avatarPreview } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
   const onChangeSelect = (
@@ -91,15 +93,10 @@ const SetupNewAccount = () => {
     }
   };
 
-  const finishSetup = async () => {
-    const data = {
-      isSetup: true,
-    };
-
-    await updateUserData({
+  const onFinishSetup = async () => {
+    await finishSetup({
       uid: authUser?.uid,
-      data,
-      providedTags: ["setup"],
+      avatarPreview,
     });
   };
 
@@ -119,7 +116,15 @@ const SetupNewAccount = () => {
     });
   };
 
-  return (
+  console.log(isLoadingFinishing, "isLoadingFinishing");
+
+  if (isSuccess) {
+    return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
+  }
+
+  return isLoadingFinishing ? (
+    <Loader />
+  ) : (
     <div className={styles.root}>
       <TopBar
         text={"Add new wallet"}
@@ -129,7 +134,7 @@ const SetupNewAccount = () => {
       <div className={styles.setupBlock}>
         <CashInput
           title={"Balance"}
-          placeholder={"00.0"}
+          placeholder={"$00.0"}
           changeHandler={onCashInputChange}
           name={"balance"}
         />
@@ -160,7 +165,7 @@ const SetupNewAccount = () => {
             <Button
               text={"Finish setup"}
               type={ButtonType.VIOLET}
-              clickHandler={finishSetup}
+              clickHandler={onFinishSetup}
               disabled={wallets.length === 0}
             />
           </InputGroup>

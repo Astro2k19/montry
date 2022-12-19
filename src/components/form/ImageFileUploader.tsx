@@ -4,22 +4,32 @@ import { ReactComponent as AttachmentIcon } from "@assets/icons/attachment.svg";
 import { AttachmentImage } from "@/components/form/AttachmentImage";
 
 interface IImageFileUploader {
-  onFileSelectSuccess: (file: File) => void;
+  onFileSelectSuccess: (imageUrl: string) => void;
   onFileSelectError: (message: string) => void;
   text: string;
+  statePreviewImage?: string;
 }
 
 export const ImageFileUploader: React.FC<IImageFileUploader> = ({
   onFileSelectSuccess,
   onFileSelectError,
   text,
+  statePreviewImage,
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = React.useState("");
   const [isSelected, setIsSelected] = React.useState(false);
 
+  React.useEffect(() => {
+    if (statePreviewImage !== undefined && statePreviewImage !== "") {
+      setImageUrl(statePreviewImage);
+      setIsSelected(true);
+    }
+  }, []);
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const filesList = event.target.files;
+    let imageData: string = "";
 
     if (!filesList?.length) {
       onFileSelectError("Please choose an logo image!");
@@ -32,13 +42,22 @@ export const ImageFileUploader: React.FC<IImageFileUploader> = ({
       return;
     }
 
-    setImageUrl(URL.createObjectURL(file));
-    setIsSelected(true);
-    onFileSelectSuccess(file);
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      imageData = reader.result as string;
+
+      if (imageData) {
+        setImageUrl(imageData);
+        setIsSelected(true);
+        onFileSelectSuccess(imageData);
+      }
+    });
+
+    reader.readAsDataURL(file);
   };
 
   const removeFile = () => {
-    console.log(inputRef.current);
     if (inputRef.current) {
       inputRef.current.value = "";
       setIsSelected(false);

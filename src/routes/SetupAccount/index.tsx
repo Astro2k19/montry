@@ -2,18 +2,34 @@ import React from "react";
 import { Button, ButtonType } from "@/components/ui/Button";
 import { useNavigate } from "react-router";
 import styles from "@styles/routes/Setup.module.scss";
-import {
-  SETUP_BALANCE_SCREEN,
-  SETUP_LOGO_SCREEN,
-} from "@/navigation/CONSTANTS";
+import { SETUP_BALANCE_SCREEN } from "@/navigation/CONSTANTS";
 import { ImageFileUploader } from "@/components/form/ImageFileUploader";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setPreviewAvatar } from "@/redux/slices/setupSlice";
 
 const SetupAccountIndex = () => {
-  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [selectedFileUrl, setSelectedFile] = React.useState<string | null>(
+    null
+  );
+  const dispatch = useAppDispatch();
+  const { avatarPreview } = useAppSelector((state) => state.setup);
   const navigate = useNavigate();
 
-  const onSuccessSelect = (file: File) => {
-    setSelectedFile(file);
+  React.useEffect(() => {
+    if (avatarPreview.trim()) {
+      setSelectedFile(avatarPreview);
+    }
+  }, []);
+
+  const clickHandler = () => {
+    if (selectedFileUrl) {
+      dispatch(setPreviewAvatar(selectedFileUrl));
+      navigate(SETUP_BALANCE_SCREEN);
+    }
+  };
+
+  const onSuccessSelect = (imageUrl: string) => {
+    setSelectedFile(imageUrl);
   };
 
   const onErrorSelect = (message: string) => {
@@ -29,15 +45,14 @@ const SetupAccountIndex = () => {
         <ImageFileUploader
           onFileSelectSuccess={onSuccessSelect}
           onFileSelectError={onErrorSelect}
-          text={"Add profile logo"}
+          statePreviewImage={avatarPreview}
+          text={"Add profile photo"}
         />
       </div>
       <Button
         text={"Continue"}
         type={ButtonType.VIOLET}
-        clickHandler={() =>
-          navigate(SETUP_BALANCE_SCREEN, { state: selectedFile })
-        }
+        clickHandler={clickHandler}
       />
     </div>
   );

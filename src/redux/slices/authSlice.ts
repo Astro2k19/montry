@@ -5,7 +5,6 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase.config";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
-import { getUserSetup } from "./setupSlice";
 import { IInitialUserState, INewUser } from "@/redux/interfaces";
 
 export const signUpNewUser = createAsyncThunk(

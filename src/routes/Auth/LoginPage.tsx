@@ -31,12 +31,12 @@ export const LoginPage = () => {
     }
   };
 
-  if (authUser && isSetup) {
-    return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
-  }
-
   if (isSuccess) {
     return <Navigate to={SETUP_ACCOUNT_SCREEN} replace={true} />;
+  }
+
+  if (authUser && isSetup) {
+    return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
   }
 
   return isLoading ? (
