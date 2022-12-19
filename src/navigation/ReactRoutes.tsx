@@ -20,9 +20,11 @@ import {
   PROFILE_SCREEN,
   SETUP_ACCOUNT_SCREEN,
   SETUP_BALANCE_SCREEN,
+  SETUP_LOGO_SCREEN,
   SIGNUP_SCREEN,
   TRANSACTIONS_SCREEN,
 } from "./CONSTANTS";
+import SetupLogo from "@/routes/SetupAccount/SetupLogo";
 
 const ReactRoutes = () => {
   const location = useLocation();
@@ -54,6 +56,7 @@ const ReactRoutes = () => {
           path={SETUP_ACCOUNT_SCREEN}
           element={<SetupAccountIndex />}
         />
+        <Route path={SETUP_LOGO_SCREEN} element={<SetupLogo />} />
         <Route path={SETUP_BALANCE_SCREEN} element={<NewAccount />} />
       </Route>
     </Routes>

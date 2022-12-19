@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "@/redux/hooks";
-import { signUpNewUser } from "@/redux/slices/authSlice";
 import { DataInput } from "@/components/form/DataInput";
 import { Button, ButtonType } from "@/components/ui/Button";
 import { InputGroup } from "@/components/ui/InputGroup";
@@ -9,11 +7,12 @@ import styles from "@styles/routes/EntryForm.module.scss";
 import googleLogo from "@/assets/google.svg";
 import { onChange } from "../utils";
 import { LOGIN_SCREEN, SETUP_ACCOUNT_SCREEN } from "@/navigation/CONSTANTS";
-import { useSignUpNewUserMutation } from "@/redux/api/apiSlice";
-import Loader from "@/components/ui/Loader";
-import { useNavigate } from "react-router-dom";
 
-export const SignUpForm = () => {
+interface ISignUpForm {
+  formHandler: (email: string, name: string, password: string) => void;
+}
+
+export const SignUpForm: React.FC<ISignUpForm> = ({ formHandler }) => {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -21,34 +20,8 @@ export const SignUpForm = () => {
     isReadRules: false,
   });
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const [signUpNewUser, { isSuccess, isLoading, isError, error }] =
-    useSignUpNewUserMutation();
-
-  const signUpWithEmail = async () => {
-    await signUpNewUser({
-      email: formData.email,
-      name: formData.name,
-      password: formData.password,
-      dispatch,
-    });
-  };
-
-  const signUpWithGoogleAcc = () => {};
-
-  React.useEffect(() => {
-    if (isSuccess) {
-      navigate(SETUP_ACCOUNT_SCREEN);
-    }
-  }, [isSuccess]);
-
-  return isLoading ? (
-    <Loader />
-  ) : (
+  return (
     <>
-      {isError && <p>{error.message}</p>}
       <InputGroup>
         <DataInput
           handleOnChange={(event) => onChange(event, setFormData)}
@@ -88,13 +61,15 @@ export const SignUpForm = () => {
         <Button
           text={"Sign Up"}
           type={ButtonType.VIOLET}
-          clickHandler={signUpWithEmail}
+          clickHandler={() =>
+            formHandler(formData.email, formData.name, formData.password)
+          }
           disabled={!formData.isReadRules}
         />
         <Button
           text={"Sign Up with Google"}
           type={ButtonType.WHITE}
-          clickHandler={signUpWithGoogleAcc}
+          clickHandler={formHandler}
           icon={googleLogo}
           disabled={!formData.isReadRules}
         />

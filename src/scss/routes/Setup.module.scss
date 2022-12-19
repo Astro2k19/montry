@@ -15,9 +15,19 @@
     line-height: 44px;
   }
 
-  p {
+  > p {
+
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 30px;
+    }
+
   }
 }

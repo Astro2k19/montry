@@ -3,7 +3,6 @@ import { ReactComponent as HomeIcon } from "@assets/icons/Home.svg";
 import { ReactComponent as TransactionIcon } from "@assets/icons/transaction.svg";
 import { ReactComponent as UserIcon } from "@assets/icons/user.svg";
 import styles from "@styles/components/Navigation.module.scss";
-
 import { NavItem } from "@/navigation/components/NavItem";
 import { AddAccounts } from "@/navigation/components/AddAccounts";
 

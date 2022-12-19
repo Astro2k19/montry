@@ -35,6 +35,7 @@ export const apiSlice = createApi({
             email,
             password
           );
+
           const usersCollectionRef = doc(db, "users", userData.user.uid);
           await setDoc(usersCollectionRef, initialSignupUserState(name, email));
 
@@ -76,7 +77,9 @@ export const apiSlice = createApi({
           const { data: uid } = await cacheDataLoaded;
 
           dispatch(setUser({ uid }));
-        } catch (error) {}
+        } catch (error) {
+          alert(error);
+        }
       },
       invalidatesTags: ["setup"],
     }),

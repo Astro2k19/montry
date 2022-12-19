@@ -3,12 +3,26 @@ import { Slider } from "@/components/Slider";
 import { Button, ButtonType } from "@/components/ui/Button";
 import styles from "@styles/routes/Auth.module.scss";
 import { useNavigate } from "react-router";
-import {LOGIN_SCREEN, SIGNUP_SCREEN} from "@/navigation/CONSTANTS";
+import {
+  DASHBOARD_SCREEN,
+  LOGIN_SCREEN,
+  SIGNUP_SCREEN,
+} from "@/navigation/CONSTANTS";
+import { useAppSelector } from "@/redux/hooks";
+import { useIsUserSetupQuery } from "@/redux/api/apiSetup";
+import React from "react";
 
 export const Auth = () => {
   const navigate = useNavigate();
 
   const goTo = (path: string) => navigate(path);
+
+  const { authUser } = useAppSelector((state) => state.auth);
+  const { data: isSetup } = useIsUserSetupQuery({ uid: authUser?.uid });
+
+  React.useEffect(() => {
+    if (authUser && isSetup) navigate(DASHBOARD_SCREEN, { replace: true });
+  }, []);
 
   return (
     <motion.div

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 interface ITopBar {
   text: string;
   type: string;
+  backPath: string;
 }
 
 export enum TopBarTypes {
@@ -19,6 +20,7 @@ const cx = classNames.bind(styles);
 export const TopBar: React.FC<ITopBar> = ({
   text,
   type = TopBarTypes.DARK,
+  backPath = "#",
 }) => {
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ export const TopBar: React.FC<ITopBar> = ({
     white: type === TopBarTypes.LIGHT,
   });
 
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate(backPath);
 
   return (
     <header className={classes}>

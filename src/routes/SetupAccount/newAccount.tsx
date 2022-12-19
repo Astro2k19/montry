@@ -21,6 +21,7 @@ import {
   useUpdateUserDataMutation,
 } from "@/redux/api/apiSetup";
 import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
+import { SETUP_ACCOUNT_SCREEN } from "@/navigation/CONSTANTS";
 
 const options = [
   { value: "bank", label: "Bank" },
@@ -118,11 +119,13 @@ const SetupNewAccount = () => {
     });
   };
 
-  console.log(setupState.balance);
-
   return (
     <div className={styles.root}>
-      <TopBar text={"Add new wallet"} type={TopBarTypes.LIGHT} />
+      <TopBar
+        text={"Add new wallet"}
+        type={TopBarTypes.LIGHT}
+        backPath={SETUP_ACCOUNT_SCREEN}
+      />
       <div className={styles.setupBlock}>
         <CashInput
           title={"Balance"}
@@ -152,6 +155,7 @@ const SetupNewAccount = () => {
               text={"Add wallet"}
               type={ButtonType.VIOLET}
               clickHandler={saveAndAddNewWallet}
+              disabled={isLoading}
             />
             <Button
               text={"Finish setup"}
