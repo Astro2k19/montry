@@ -66,7 +66,7 @@ export const apiSetup = apiSlice.injectEndpoints({
           return { error };
         }
       },
-      providesTags: ["setup"],
+      // providesTags: ["setup"],
     }),
     finishSetup: builder.mutation({
       async queryFn({ uid, avatarPreview }) {
@@ -84,7 +84,23 @@ export const apiSetup = apiSlice.injectEndpoints({
           return { error };
         }
       },
-      invalidatesTags: ["setup"],
+      async onQueryStarted(
+        { uid, avatarPreview },
+        { dispatch, queryFulfilled }
+      ) {
+        const pathResult = dispatch(
+          apiSetup.util.updateQueryData("isUserSetup", uid, (draft) => {
+            return true;
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch {
+          pathResult.undo();
+        }
+      },
+      // invalidatesTags: ["setup"],
     }),
   }),
 });

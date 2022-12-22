@@ -117,8 +117,9 @@ const SetupNewAccount = () => {
   };
 
   console.log(isLoadingFinishing, "isLoadingFinishing");
+  console.log(isSuccess, "isSuccess");
 
-  if (isSuccess) {
+  if (isSuccess && !isLoadingFinishing) {
     return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
   }
 
