@@ -16,19 +16,9 @@ const ProtectedRoutes: React.FC<IProtectedRoutesProps> = ({
   if (authUser === null || authUser === undefined)
     return <Navigate to={"/login"} replace={true} />;
 
-  const {
-    data: isSetup,
-    isLoading,
-    isFetching,
-    isSuccess,
-  } = useIsUserSetupQuery({
+  const { data: isSetup, isSuccess } = useIsUserSetupQuery({
     uid: authUser?.uid,
   });
-
-  console.log("protected route, is loading", isLoading);
-  console.log("protected route, is success", isSuccess);
-
-  // if (isFetching || isLoading) return <Loader />;
 
   if (isSuccess) {
     return requireSetup ? (

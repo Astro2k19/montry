@@ -89,10 +89,18 @@ export const apiSetup = apiSlice.injectEndpoints({
         { dispatch, queryFulfilled }
       ) {
         const pathResult = dispatch(
-          apiSetup.util.updateQueryData("isUserSetup", uid, (draft) => {
+          apiSetup.util.updateQueryData("isUserSetup", { uid }, (draft) => {
+            console.log(avatarPreview, "avatarPreview");
+            console.log(uid, "uid");
+            console.log(draft, "draft");
             return true;
           })
         );
+
+        console.log(apiSetup.util, "utils");
+        console.log(apiSetup, "apiSetup");
+
+        console.log(pathResult);
 
         try {
           await queryFulfilled;

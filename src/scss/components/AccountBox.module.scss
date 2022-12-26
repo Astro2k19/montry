@@ -1,0 +1,22 @@
+.accountBox {
+  display: flex;
+  gap: 10px;
+  width: 50%;
+  padding: 17px 17px 14px 16px;
+  border-radius: 28px;
+}
+
+.text {
+  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FCFCFC;
+}
+
+.amount {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 27px;
+  color: #FCFCFC;
+}
