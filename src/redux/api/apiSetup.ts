@@ -90,17 +90,9 @@ export const apiSetup = apiSlice.injectEndpoints({
       ) {
         const pathResult = dispatch(
           apiSetup.util.updateQueryData("isUserSetup", { uid }, (draft) => {
-            console.log(avatarPreview, "avatarPreview");
-            console.log(uid, "uid");
-            console.log(draft, "draft");
             return true;
           })
         );
-
-        console.log(apiSetup.util, "utils");
-        console.log(apiSetup, "apiSetup");
-
-        console.log(pathResult);
 
         try {
           await queryFulfilled;
@@ -108,7 +100,6 @@ export const apiSetup = apiSlice.injectEndpoints({
           pathResult.undo();
         }
       },
-      // invalidatesTags: ["setup"],
     }),
   }),
 });

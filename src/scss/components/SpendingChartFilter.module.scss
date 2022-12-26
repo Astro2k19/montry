@@ -1,0 +1,17 @@
+.filtration {
+  display: flex;
+}
+
+.item {
+  padding: 8px 24px;
+  border-radius: 16px;
+  color: $grey;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.item.active {
+  background: #FCEED4;
+  color: $yellow;
+  font-weight: 700;
+}

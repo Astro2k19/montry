@@ -2,7 +2,7 @@ import React from "react";
 import styles from "@styles/components/Balance.module.scss";
 import { BalanceSkeleton } from "@/routes/Dashboard/components/BalanceSkeleton";
 
-export const Balance = ({ amount, isLoading }) => {
+export const Balance = ({ amount = 0, isLoading }) => {
   return (
     <div className={styles.wrapper}>
       {isLoading ? (

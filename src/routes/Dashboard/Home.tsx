@@ -1,16 +1,18 @@
 import React from "react";
-import Balance from "./components/Balance";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { Balance } from "./components/Balance";
 import { Header } from "@/routes/Dashboard/components/Header";
+import {
+  useGetDashboardGeneralDataQuery,
+  useGetSpendingDataQuery,
+  useGetTransactionsQuery,
+} from "@/redux/api/apiDashboard";
+import { useAppSelector } from "@/redux/hooks";
+import { SpendingChart } from "@/routes/Dashboard/components/SpendingChart";
+import { SpendingChartFiltr } from "@/routes/Dashboard/components/SpendingChartFiltr";
+import { RecentTransactions } from "@/routes/Dashboard/components/RecentTransactions";
+import { AccountBox } from "@/routes/Dashboard/components/AccountBox";
+import { ReactComponent as IncomeIcon } from "@assets/icons/Income.svg";
+import { ReactComponent as ExpenseIcon } from "@assets/icons/Expense.svg";
 
 const data = [
   {
@@ -58,22 +60,36 @@ const data = [
 ];
 
 const Home = () => {
+  const { authUser } = useAppSelector((state) => state.auth);
+  const { isLoading: isLoadingGeneral, data } = useGetDashboardGeneralDataQuery(
+    authUser?.uid
+  );
+  const { data: spendingData, isLoading: isLoadingSpending } =
+    useGetSpendingDataQuery({
+      uid: authUser?.uid,
+    });
+  const { data: transactions, isLoading: isLoadingTransactions } =
+    useGetTransactionsQuery({
+      uid: authUser?.uid,
+    });
+
+  const isLoading = () => {
+    return [isLoadingSpending, isLoadingTransactions, isLoadingGeneral].some(
+      Boolean
+    );
+  };
+
   return (
     <div className={"dashboardHome"}>
       <Header />
-      <Balance />
-      <ResponsiveContainer width="100%" height={200}>
-        <LineChart width={300} height={100} data={data}>
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="pv"
-            stroke="#8884d8"
-            strokeWidth={2}
-            activeDot={{ r: 8 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Balance isLoading={isLoading()} />
+      <div styles={{ display: "flex", gap: "16px" }}>
+        <AccountBox text={"Income"} amount={500} Icon={<IncomeIcon />} />
+        <AccountBox text={"Expenses"} amount={900} Icon={<ExpenseIcon />} />
+      </div>
+      <SpendingChart data={data} isLoading={isLoading()} />
+      <SpendingChartFiltr />
+      <RecentTransactions transactions={transactions} isLoading={isLoading()} />
     </div>
   );
 };

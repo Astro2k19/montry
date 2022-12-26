@@ -18,7 +18,7 @@ export const Avatar = () => {
   return isLoading ? (
     <AvatarSkeleton />
   ) : (
-    <div classNames={styles.avatar}>
+    <div className={styles.avatar}>
       <img src={src} alt="user's avatar" />
     </div>
   );
