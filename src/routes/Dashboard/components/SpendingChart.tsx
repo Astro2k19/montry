@@ -7,6 +7,7 @@ export const SpendingChart = ({ data, isLoading }) => {
     <p>Loading</p>
   ) : (
     <>
+      <div style={{ marginBottom: "30px" }}>Spend Frequency</div>
       <ResponsiveContainer width="100%" height={200}>
         <LineChart width={300} height={100} data={data}>
           <Tooltip />

@@ -4,18 +4,18 @@ import styles from "@styles/components/AccountBox.module.scss";
 interface IAccountBox {
   text: string;
   amount: string | number;
-  Icon: React.ComponentType;
-  compStyles: React.CSSProperties;
+  Icon: React.ReactElement;
+  compStyle: React.CSSProperties;
 }
 
 export const AccountBox: React.FC<IAccountBox> = ({
   text,
   amount,
   Icon,
-  compStyles,
+  compStyle,
 }) => {
   return (
-    <div className={styles.accountBox} styles={compStyles}>
+    <div className={styles.accountBox} style={compStyle}>
       <Icon />
       <div>
         <span className={styles.text}>{text}</span>

@@ -79,13 +79,31 @@ const Home = () => {
     );
   };
 
+  let incomeStyle: React.CSSProperties = {
+    backgroundColor: "#00A86B",
+  };
+
+  const expensesStyle: React.CSSProperties = {
+    backgroundColor: "#FD3C4A",
+  };
+
   return (
     <div className={"dashboardHome"}>
       <Header />
       <Balance isLoading={isLoading()} />
-      <div styles={{ display: "flex", gap: "16px" }}>
-        <AccountBox text={"Income"} amount={500} Icon={<IncomeIcon />} />
-        <AccountBox text={"Expenses"} amount={900} Icon={<ExpenseIcon />} />
+      <div style={{ display: "flex", gap: "16px", marginBottom: "36px" }}>
+        <AccountBox
+          text={"Income"}
+          amount={500}
+          Icon={<IncomeIcon />}
+          compStyle={incomeStyle}
+        />
+        <AccountBox
+          text={"Expenses"}
+          amount={900}
+          Icon={<ExpenseIcon />}
+          compStyle={expensesStyle}
+        />
       </div>
       <SpendingChart data={data} isLoading={isLoading()} />
       <SpendingChartFiltr />

@@ -1,0 +1,69 @@
+.recentTransactions {
+  display: grid;
+  gap: 7px;
+
+}
+
+.recentTransactionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  p {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  button {
+    padding: 8px 16px;
+    gap: 10px;
+    background: #EEE5FF;
+    color: $violete;
+    border-radius: 40px;
+  }
+}
+
+.transactionItem {
+  display: grid;
+  grid-template-columns: 60px 1px 60px;
+  column-gap: 6px;
+  padding: 14px 17px;
+  background: #FCFCFC;
+  border-radius: 24px;
+}
+
+.transactionBody {
+
+  h6 {
+    margin-bottom: 13px;
+    font-size: 16px;
+    line-height: 19px;
+    color: $black;
+}
+
+}
+
+.transactionDescription {
+  font-size: 13px;
+  line-height: 16px;
+  color: $grey;
+}
+
+.transactionMeta {
+
+}
+
+.transactionPrice {
+  margin-bottom: 13px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: $red ;
+}
+.transactionTime {
+  font-size: 13px;
+  line-height: 16px;
+  color: #91919F;
+}
