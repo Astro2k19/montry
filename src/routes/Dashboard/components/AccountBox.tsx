@@ -1,22 +1,27 @@
 import React from "react";
 import styles from "@styles/components/AccountBox.module.scss";
+import { AccountBoxSkeleton } from "@/routes/Dashboard/components/AccountBoxSkeleton";
 
 interface IAccountBox {
   text: string;
   amount: string | number;
-  Icon: React.ReactElement;
+  Icon: React.ComponentType;
   compStyle: React.CSSProperties;
+  isLoading: boolean;
 }
 
 export const AccountBox: React.FC<IAccountBox> = ({
   text,
   amount,
-  Icon,
+  // Icon,
   compStyle,
+  isLoading,
 }) => {
-  return (
+  return isLoading ? (
+    <AccountBoxSkeleton />
+  ) : (
     <div className={styles.accountBox} style={compStyle}>
-      <Icon />
+      {/*<Icon />*/}
       <div>
         <span className={styles.text}>{text}</span>
         <span className={styles.amount}>{amount}</span>

@@ -1,5 +1,6 @@
 import React from "react";
 import { TransactionSkeleton } from "@/components/TransactionSketeton";
+import styles from "@/scss/components/Transactions.module.scss";
 
 interface ITransaction {
   icon: string;
@@ -12,42 +13,48 @@ interface ITransaction {
 interface IRecentTransactions {
   transactions: ITransaction[];
   isLoading: boolean;
+  isFetching: boolean;
 }
 export const RecentTransactions: React.FC<IRecentTransactions> = ({
   transactions,
   isLoading,
+  isFetching,
 }) => {
   const data = transactions.map((item) => {
-    const formatedDate = new Date(item.timestamp).toLocaleTimeString("en-US", {
+    const formattedDate = new Date(item.timestamp).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
     });
 
     return (
-      <div className={"transactionItem"}>
+      <div className={styles.transactionItem}>
         <div className="icon">{item.icon}</div>
-        <div className="transactionBody">
+        <div className={styles.transactionBody}>
           <h6>{item.title}</h6>
-          <div className="transactionDescription">{item.description}</div>
+          <div className={styles.transactionDescription}>
+            {item.description}
+          </div>
         </div>
-        <div className="transactionMeta">
-          <div className="transactionPrice">{item.price}</div>
-          <div className="transactionTime">{formatedDate}</div>
+        <div className={styles.transactionMeta}>
+          <div className={styles.transactionPrice}>{item.price}</div>
+          <div className={styles.transactionTime}>{formattedDate}</div>
         </div>
       </div>
     );
   });
 
   return (
-    <div className={"recentTransactions"}>
-      <div className="recentTransactionHeader">
+    <div className={styles.recentTransactions}>
+      <div className={styles.recentTransactionsHeader}>
         <p>Recent Transaction</p>
         <button onClick={console.log}>See All</button>
       </div>
-      {isLoading
-        ? new Array(3).fill(0).map(() => <TransactionSkeleton />)
-        : data}
+      <div className={styles.recentTransactionsBody}>
+        {isLoading
+          ? new Array(3).fill(0).map(() => <TransactionSkeleton />)
+          : data}
+      </div>
     </div>
   );
 };

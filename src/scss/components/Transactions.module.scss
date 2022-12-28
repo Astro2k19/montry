@@ -4,7 +4,12 @@
 
 }
 
-.recentTransactionHeader {
+.recentTransactionsBody {
+  height: 200px;
+  overflow-y: auto;
+}
+
+.recentTransactionsHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;

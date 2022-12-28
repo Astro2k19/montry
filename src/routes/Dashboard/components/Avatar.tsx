@@ -15,6 +15,8 @@ export const Avatar = () => {
     uid: authUser?.uid,
   });
 
+  console.log(src);
+
   return isLoading ? (
     <AvatarSkeleton />
   ) : (

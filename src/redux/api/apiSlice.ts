@@ -21,6 +21,9 @@ const initialSignupUserState = (name: string, email: string) => ({
   isSetup: false,
   balance: 0,
   wallets: [],
+  expenses: 0,
+  income: 0,
+  transactions: [],
 });
 
 export const apiSlice = createApi({
@@ -59,7 +62,7 @@ export const apiSlice = createApi({
       async queryFn({ email: passedEmail, password }) {
         try {
           const {
-            user: { uid, email },
+            user: { uid },
           } = await signInWithEmailAndPassword(auth, passedEmail, password);
 
           const userRefDoc = doc(db, "users", uid);

@@ -13,8 +13,10 @@ import { RecentTransactions } from "@/routes/Dashboard/components/RecentTransact
 import { AccountBox } from "@/routes/Dashboard/components/AccountBox";
 import { ReactComponent as IncomeIcon } from "@assets/icons/Income.svg";
 import { ReactComponent as ExpenseIcon } from "@assets/icons/Expense.svg";
+import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
+import TopPanel from "@/components/ui/TopPanel";
 
-const data = [
+const dataSpend = [
   {
     name: "Page A",
     uv: 4000,
@@ -65,18 +67,18 @@ const Home = () => {
     authUser?.uid
   );
   const { data: spendingData, isLoading: isLoadingSpending } =
-    useGetSpendingDataQuery({
+    useGetSpecificUserFieldQuery({
+      fieldName: "transactions",
       uid: authUser?.uid,
     });
-  const { data: transactions, isLoading: isLoadingTransactions } =
-    useGetTransactionsQuery({
+  const { data: transactions = [], isLoading: isLoadingTransactions } =
+    useGetSpecificUserFieldQuery({
+      fieldName: "transactions",
       uid: authUser?.uid,
     });
 
   const isLoading = () => {
-    return [isLoadingSpending, isLoadingTransactions, isLoadingGeneral].some(
-      Boolean
-    );
+    return false;
   };
 
   let incomeStyle: React.CSSProperties = {
@@ -87,25 +89,31 @@ const Home = () => {
     backgroundColor: "#FD3C4A",
   };
 
+  console.log(data);
+
   return (
     <div className={"dashboardHome"}>
       <Header />
-      <Balance isLoading={isLoading()} />
-      <div style={{ display: "flex", gap: "16px", marginBottom: "36px" }}>
-        <AccountBox
-          text={"Income"}
-          amount={500}
-          Icon={<IncomeIcon />}
-          compStyle={incomeStyle}
-        />
-        <AccountBox
-          text={"Expenses"}
-          amount={900}
-          Icon={<ExpenseIcon />}
-          compStyle={expensesStyle}
-        />
-      </div>
-      <SpendingChart data={data} isLoading={isLoading()} />
+      <TopPanel>
+        <Balance amount={data?.balance} isLoading={isLoading()} />
+        <div style={{ display: "flex", gap: "16px", marginBottom: "10px" }}>
+          <AccountBox
+            text={"Income"}
+            amount={data?.income}
+            Icon={<IncomeIcon />}
+            compStyle={incomeStyle}
+            isLoading={isLoading()}
+          />
+          <AccountBox
+            text={"Expenses"}
+            amount={data?.expenses}
+            Icon={<ExpenseIcon />}
+            compStyle={expensesStyle}
+            isLoading={isLoading()}
+          />
+        </div>
+      </TopPanel>
+      <SpendingChart data={dataSpend} isLoading={isLoading()} />
       <SpendingChartFiltr />
       <RecentTransactions transactions={transactions} isLoading={isLoading()} />
     </div>
