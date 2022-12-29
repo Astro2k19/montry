@@ -37,19 +37,27 @@ const navList = [
 
 const Navigation = () => {
   const halfWayIndex = Math.ceil(navList.length / 2);
-  const leftPart = navList
-    .slice(0, halfWayIndex)
-    .map((item) => <NavItem {...item} />);
+  const LeftNavPart = () => (
+    <ul>
+      {navList.slice(0, halfWayIndex).map((item) => (
+        <NavItem {...item} />
+      ))}
+    </ul>
+  );
 
-  const rightPart = navList
-    .slice(halfWayIndex)
-    .map((item) => <NavItem {...item} />);
+  const RightNavPart = () => (
+    <ul>
+      {navList.slice(halfWayIndex).map((item) => (
+        <NavItem {...item} />
+      ))}
+    </ul>
+  );
 
   return (
     <nav className={styles.nav}>
-      <ul>{leftPart}</ul>
+      <LeftNavPart />
       <AddAccounts />
-      <ul>{rightPart}</ul>
+      <RightNavPart />
     </nav>
   );
 };

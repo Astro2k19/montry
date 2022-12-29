@@ -78,8 +78,11 @@ select {
   max-width: 405px;
   width: 100%;
   min-height: 812px;
+  max-height: 1055px;
+  height: 100%;
   padding: 44px 15px 34px 15px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .loader {

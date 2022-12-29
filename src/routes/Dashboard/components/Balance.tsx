@@ -14,7 +14,7 @@ export const Balance: React.FC<IBalance> = ({ amount = 0, isLoading }) => {
       {isLoading ? (
         <BalanceSkeleton />
       ) : (
-        <span className={styles.balance}>{amount}</span>
+        <span className={styles.balance}>${amount}</span>
       )}
     </div>
   );

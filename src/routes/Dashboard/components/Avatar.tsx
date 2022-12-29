@@ -3,19 +3,11 @@ import styles from "@/scss/components/Avatar.module.scss";
 import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { AvatarSkeleton } from "./AvatarSkeleton";
+import { useGetAvatarQuery } from "@/redux/api/apiDashboard";
 
 export const Avatar = () => {
   const { authUser } = useAppSelector((state) => state.auth);
-  const {
-    isLoading,
-    data: src,
-    isSuccess,
-  } = useGetSpecificUserFieldQuery({
-    fieldName: "imageUrl",
-    uid: authUser?.uid,
-  });
-
-  console.log(src);
+  const { isLoading, data: src } = useGetAvatarQuery(authUser?.uid);
 
   return isLoading ? (
     <AvatarSkeleton />

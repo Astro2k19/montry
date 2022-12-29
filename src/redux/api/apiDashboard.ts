@@ -1,6 +1,7 @@
 import { apiSlice } from "@/redux/api/apiSlice";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebase.config";
+import { db, storage } from "@/firebase/firebase.config";
+import { ref, getDownloadURL } from "firebase/storage";
 
 export const apiDashboard = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,9 +10,6 @@ export const apiDashboard = apiSlice.injectEndpoints({
         try {
           const userDoc = doc(db, "users", uid);
           const docSnap = await getDoc(userDoc);
-
-          console.log(docSnap, "snap");
-          console.log(docSnap.data());
 
           if (docSnap.exists()) {
             return { data: docSnap.data() };
@@ -22,10 +20,29 @@ export const apiDashboard = apiSlice.injectEndpoints({
       },
     }),
     getSpendingData: builder.query({
-      async queryFn({ uid }) {},
+      async queryFn(uid: string) {},
     }),
     getTransactions: builder.query({
-      async queryFn({ uid }) {},
+      async queryFn(uid: string) {},
+    }),
+    getAvatar: builder.query({
+      async queryFn(uid: string) {
+        try {
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const avatarUrl = docSnap.get("imageUrl");
+            console.log(avatarUrl);
+            const gsReference = ref(storage, avatarUrl);
+            const url = await getDownloadURL(gsReference);
+
+            return { data: url };
+          }
+        } catch (error) {
+          return { error };
+        }
+      },
     }),
   }),
 });
@@ -34,4 +51,5 @@ export const {
   useGetDashboardGeneralDataQuery,
   useGetSpendingDataQuery,
   useGetTransactionsQuery,
+  useGetAvatarQuery,
 } = apiDashboard;

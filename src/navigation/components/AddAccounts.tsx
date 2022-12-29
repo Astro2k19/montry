@@ -31,27 +31,25 @@ export const AddAccounts = () => {
 
   const list = accountsList.map((item) => <AddAccount {...item} />);
   return (
-    <>
-      <motion.button
-        className={styles.addAccounts}
-        whileTap={{ scale: 0.97 }}
-        onClick={() => setIsOpen((prevState) => !prevState)}
-        initial={false}
-        animate={isOpen ? "open" : "closed"}
+    <motion.button
+      className={styles.addAccounts}
+      whileTap={{ scale: 0.97 }}
+      onClick={() => setIsOpen((prevState) => !prevState)}
+      initial={false}
+      animate={isOpen ? "open" : "closed"}
+    >
+      <motion.span variants={{ open: { rotate: 45 }, closed: { rotate: 0 } }}>
+        <PlusIcon />
+      </motion.span>
+      <motion.div
+        className={styles.accountsList}
+        variants={{
+          open: { scale: 1 },
+          closed: { scale: 0 },
+        }}
       >
-        <motion.span variants={{ open: { rotate: 45 }, closed: { rotate: 0 } }}>
-          <PlusIcon />
-        </motion.span>
-        <motion.div
-          className={styles.accountsList}
-          variants={{
-            open: { scale: 1 },
-            closed: { scale: 0 },
-          }}
-        >
-          {list}
-        </motion.div>
-      </motion.button>
-    </>
+        {list}
+      </motion.div>
+    </motion.button>
   );
 };

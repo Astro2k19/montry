@@ -47,7 +47,7 @@ export const RecentTransactions: React.FC<IRecentTransactions> = ({
   return (
     <div className={styles.recentTransactions}>
       <div className={styles.recentTransactionsHeader}>
-        <p>Recent Transaction</p>
+        <h4>Recent Transaction</h4>
         <button onClick={console.log}>See All</button>
       </div>
       <div className={styles.recentTransactionsBody}>

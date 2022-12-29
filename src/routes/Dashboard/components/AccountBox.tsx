@@ -5,7 +5,7 @@ import { AccountBoxSkeleton } from "@/routes/Dashboard/components/AccountBoxSkel
 interface IAccountBox {
   text: string;
   amount: string | number;
-  Icon: React.ComponentType;
+  Icon: JSX.Element;
   compStyle: React.CSSProperties;
   isLoading: boolean;
 }
@@ -13,7 +13,7 @@ interface IAccountBox {
 export const AccountBox: React.FC<IAccountBox> = ({
   text,
   amount,
-  // Icon,
+  Icon,
   compStyle,
   isLoading,
 }) => {
@@ -21,10 +21,10 @@ export const AccountBox: React.FC<IAccountBox> = ({
     <AccountBoxSkeleton />
   ) : (
     <div className={styles.accountBox} style={compStyle}>
-      {/*<Icon />*/}
+      {Icon}
       <div>
-        <span className={styles.text}>{text}</span>
-        <span className={styles.amount}>{amount}</span>
+        <div className={styles.text}>{text}</div>
+        <span className={styles.amount}>${amount}</span>
       </div>
     </div>
   );

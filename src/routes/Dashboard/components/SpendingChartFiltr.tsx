@@ -8,15 +8,15 @@ export const SpendingChartFiltr = () => {
   const [isActive, setIsActive] = React.useState(0);
 
   return (
-    <ul className={styles.filtration}>
+    <div className={styles.filtration}>
       {filter.map((item, index) => {
         const classes = cx({
           item: true,
           active: index === isActive,
         });
 
-        return <li className={classes}>{item}</li>;
+        return <button className={classes}>{item}</button>;
       })}
-    </ul>
+    </div>
   );
 };

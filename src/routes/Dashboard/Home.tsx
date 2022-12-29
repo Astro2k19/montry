@@ -1,11 +1,7 @@
 import React from "react";
 import { Balance } from "./components/Balance";
 import { Header } from "@/routes/Dashboard/components/Header";
-import {
-  useGetDashboardGeneralDataQuery,
-  useGetSpendingDataQuery,
-  useGetTransactionsQuery,
-} from "@/redux/api/apiDashboard";
+import { useGetDashboardGeneralDataQuery } from "@/redux/api/apiDashboard";
 import { useAppSelector } from "@/redux/hooks";
 import { SpendingChart } from "@/routes/Dashboard/components/SpendingChart";
 import { SpendingChartFiltr } from "@/routes/Dashboard/components/SpendingChartFiltr";
@@ -15,49 +11,47 @@ import { ReactComponent as IncomeIcon } from "@assets/icons/Income.svg";
 import { ReactComponent as ExpenseIcon } from "@assets/icons/Expense.svg";
 import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
 import TopPanel from "@/components/ui/TopPanel";
+import styles from "@/scss/routes/Dashboard.module.scss";
+import { serverTimestamp } from "firebase/firestore";
 
 const dataSpend = [
   {
-    name: "Page A",
+    name: "Monday",
     uv: 4000,
-    pv: 2400,
-    amt: 2400,
   },
   {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: "Tuesday",
+    uv: 5000,
   },
   {
-    name: "Page C",
+    name: "Wednesday",
     uv: 2000,
-    pv: 9800,
-    amt: 2290,
   },
   {
-    name: "Page D",
+    name: "Thursday",
     uv: 2780,
-    pv: 3908,
-    amt: 2000,
   },
   {
-    name: "Page E",
+    name: "Friday",
     uv: 1890,
-    pv: 4800,
-    amt: 2181,
   },
   {
-    name: "Page F",
+    name: "Sunday",
     uv: 2390,
-    pv: 3800,
-    amt: 2500,
   },
   {
-    name: "Page G",
+    name: "Saturday",
     uv: 3490,
-    pv: 4300,
-    amt: 2100,
+  },
+];
+
+const transactionsData = [
+  {
+    icon: "",
+    title: "Shopping",
+    description: "Buy some grocery",
+    price: 120,
+    timestamp: serverTimestamp(),
   },
 ];
 
@@ -78,7 +72,9 @@ const Home = () => {
     });
 
   const isLoading = () => {
-    return false;
+    return [isLoadingGeneral, isLoadingSpending, isLoadingTransactions].some(
+      Boolean
+    );
   };
 
   let incomeStyle: React.CSSProperties = {
@@ -92,8 +88,9 @@ const Home = () => {
   console.log(data);
 
   return (
-    <div className={"dashboardHome"}>
+    <div className={styles.dashboardHome}>
       <Header />
+
       <TopPanel>
         <Balance amount={data?.balance} isLoading={isLoading()} />
         <div style={{ display: "flex", gap: "16px", marginBottom: "10px" }}>
