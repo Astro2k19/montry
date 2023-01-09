@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import { motion } from "framer-motion";
 
 interface ButtonProps {
   text: string;
@@ -30,9 +31,14 @@ export const Button: React.FC<ButtonProps> = ({
   });
 
   return (
-    <button className={classes} onClick={clickHandler} disabled={disabled}>
+    <motion.button
+      className={classes}
+      onClick={clickHandler}
+      disabled={disabled}
+      whileTap={{ scale: 0.95 }}
+    >
       {icon && <img src={icon} alt="icon" />}
       {text}
-    </button>
+    </motion.button>
   );
 };

@@ -5,14 +5,13 @@ import styles from "@/scss/components/ScreenCurtain.module.scss";
 interface IScreenCurtain {
   children: React.ReactNode;
   isOpen: boolean;
-  closeCurtain: () => void;
+  closeCurtain: (event: React.MouseEvent) => void;
 }
 
-const ScreenCurtain: React.FC<IScreenCurtain> = ({
-  children,
-  isOpen,
-  closeCurtain,
-}) => {
+const ScreenCurtain = React.forwardRef<
+  React.ForwardedRef<HTMLDivElement | undefined>,
+  IScreenCurtain
+>(({ children, isOpen, closeCurtain }, ref) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -33,8 +32,9 @@ const ScreenCurtain: React.FC<IScreenCurtain> = ({
             initial={{ translateY: 100 }}
             animate={{ translateY: 0, zIndex: 2 }}
             exit={{ translateY: 100 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.3 }}
             className={styles.curtain}
+            ref={ref}
           >
             {children}
           </motion.div>
@@ -42,5 +42,5 @@ const ScreenCurtain: React.FC<IScreenCurtain> = ({
       )}
     </AnimatePresence>
   );
-};
+});
 export default ScreenCurtain;

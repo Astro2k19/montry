@@ -48,6 +48,7 @@ export const NewTransaction: React.FC<INewTransaction> = ({
   const [category, setCategory] = React.useState({});
   const [wallet, setWallet] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
+  const curtainRef = React.useRef<HTMLDivElement | undefined>();
 
   const [transaction, setTransaction] = React.useState({
     amount: 0,
@@ -56,15 +57,20 @@ export const NewTransaction: React.FC<INewTransaction> = ({
   });
 
   const clickHandler = () => {
-    // console.log(wallet, "wallet");
+    console.log(wallet, "wallet");
     // console.log(category, "category");
     // console.log(transaction, "transaction");
     console.log("test");
-    setIsOpen((prev) => !prev);
+    // setIsOpen((prev) => !prev);
   };
 
   const closeCurtain = (event: React.MouseEvent) => {
-    if (event) {
+    if (!curtainRef.current) return;
+
+    const { className = "" } = curtainRef.current;
+    const target = event.target as HTMLElement;
+
+    if (!target.closest(`.${className}`)) {
       setIsOpen(false);
     }
   };
@@ -73,7 +79,7 @@ export const NewTransaction: React.FC<INewTransaction> = ({
       return wallets.map((wallet) => ({
         label: `${capitalizeFirstLetter(wallet.name)} - ${wallet.balance}$`,
         value: wallet.name,
-        balance: wallet.balance,
+        balance: "#FF8B00",
       }));
     }
   };
@@ -132,7 +138,11 @@ export const NewTransaction: React.FC<INewTransaction> = ({
           </InputGroup>
         </BottomPanel>
       </div>
-      <ScreenCurtain isOpen={isOpen} closeCurtain={closeCurtain}>
+      <ScreenCurtain
+        isOpen={isOpen}
+        closeCurtain={closeCurtain}
+        ref={curtainRef}
+      >
         <DataInput
           handleOnChange={console.log}
           value={"test"}

@@ -1,17 +1,17 @@
 import { OnChangeValue } from "react-select/dist/declarations/src/types";
 import { Dispatch } from "react";
 
-export interface IOption {
-  value: string;
-  label: string;
+export interface IOption<T> {
+  [key: string]: T;
+  value: T;
+  label: T;
 }
 
 export const onChangeSelect = (
-  newValue: OnChangeValue<IOption, false>,
-  setSelectState: Dispatch<IOption>
+  newValue: OnChangeValue<IOption<string | number>, false>,
+  setSelectState: Dispatch<IOption<string | number>>
 ) => {
   setSelectState({
-    label: newValue!.label,
-    value: newValue!.value,
+    ...newValue,
   });
 };
