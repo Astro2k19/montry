@@ -33,7 +33,6 @@ export const apiDashboard = apiSlice.injectEndpoints({
 
           if (docSnap.exists()) {
             const avatarUrl = docSnap.get("imageUrl");
-            console.log(avatarUrl);
             const gsReference = ref(storage, avatarUrl);
             const url = await getDownloadURL(gsReference);
 

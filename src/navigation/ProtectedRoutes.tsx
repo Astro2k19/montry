@@ -30,7 +30,7 @@ const ProtectedRoutes: React.FC<IProtectedRoutesProps> = ({
     ) : !isSetup ? (
       <Outlet />
     ) : (
-      <Navigate to={"/dashboard"} replace={true} />
+      <Navigate to={"/dashboard/home"} replace={true} />
     );
   }
 };

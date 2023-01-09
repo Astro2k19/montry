@@ -1,16 +1,33 @@
-import React, { SetStateAction } from "react";
+import React from "react";
+import { NumberFormatValues } from "react-number-format";
+import { SourceInfo } from "react-number-format/types/types";
 
-// export const onChangeInput = (
-//   event: React.SyntheticEvent,
-//   setState: React.Dispatch<React.Dispatch<SetStateAction<State>>>
-// ) => {
-//   if (!event) return;
-//
-//   const target = event.target as HTMLInputElement;
-//   const name = target.name;
-//
-//   setState((prevSetupState) => ({
-//     ...prevSetupState,
-//     [name]: target.value,
-//   }));
-// };
+export const onChangeInput = <T>(
+  event: React.SyntheticEvent,
+  setState: React.Dispatch<React.SetStateAction<T>>
+) => {
+  if (!event) return;
+
+  const target = event.target as HTMLInputElement;
+  const name = target.name;
+
+  setState((prevSetupState: T) => ({
+    ...prevSetupState,
+    [name]: target.value,
+  }));
+};
+
+export const onCashInputChange = <T>(
+  values: NumberFormatValues,
+  sourceInfo: SourceInfo,
+  setState: React.Dispatch<React.SetStateAction<T>>
+) => {
+  const target = sourceInfo.event?.target as HTMLInputElement | undefined;
+
+  if (target) {
+    setState((prevSetupState: T) => ({
+      ...prevSetupState,
+      [target.name]: values.value,
+    }));
+  }
+};

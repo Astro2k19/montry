@@ -1,9 +1,10 @@
-import ContentLoader from "react-content-loader";
+import ContentLoader, { IContentLoaderProps } from "react-content-loader";
+import React from "react";
 
-export const TransactionSkeleton = (props) => (
+export const TransactionSkeleton: React.FC<IContentLoaderProps> = (props) => (
   <ContentLoader
     speed={2}
-    width={336}
+    width="100%"
     height={89}
     viewBox="0 0 336 89"
     backgroundColor="#f3f3f3"

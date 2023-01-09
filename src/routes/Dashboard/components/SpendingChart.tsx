@@ -11,47 +11,54 @@ import {
 } from "recharts";
 import React from "react";
 import { SpendingChartFiltr } from "@/routes/Dashboard/components/SpendingChartFiltr";
+import { SpendingChartSkeleton } from "@/routes/Dashboard/components/SpendingChartSkeleton";
 
-export const SpendingChart = ({ data, isLoading }) => {
-  // const formatter = (value, name, props) => {
-  //     let formattedName = labelByCategory[name]
-  //     let formattedValue = Math.round(value * 100) / 100 return [formattedValue, formattedName, props]
-  // }
-  return isLoading ? (
-    <p>Loading</p>
-  ) : (
+interface ISpendingChart {
+  data: [];
+  isLoading: boolean;
+}
+
+export const SpendingChart: React.FC<ISpendingChart> = ({
+  data,
+  isLoading,
+}) => {
+  return (
     <>
-      <h4 style={{ marginBottom: "16px", paddingBlock: "13px" }}>
+      <h4 style={{ marginBottom: "16px", padding: "13px 15px" }}>
         Spend Frequency
       </h4>
-      <ResponsiveContainer width="100%" height={190}>
-        <AreaChart
-          width={345}
-          height={190}
-          data={data}
-          margin={{
-            bottom: 9,
-          }}
-        >
-          <Tooltip
-            label="name"
-            labelFormatter={(_, [label]) =>
-              label && label.payload ? label.payload.name : ""
-            }
-          />
-          {/*<XAxis dataKey="name" />*/}
-          <Area
-            type="monotone"
-            dataKey="uv"
-            name={"spent"}
-            stroke="#7F3DFF"
-            strokeWidth={5}
-            fill="rgba(139, 80, 255, 0.24)"
-            textLength={5}
-            label={"label"}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      {isLoading ? (
+        <SpendingChartSkeleton />
+      ) : (
+        <ResponsiveContainer width="100%" height={190}>
+          <AreaChart
+            width={345}
+            height={190}
+            data={data}
+            margin={{
+              bottom: 9,
+            }}
+          >
+            <Tooltip
+              label="name"
+              labelFormatter={(_, [label]) =>
+                label && label.payload ? label.payload.name : ""
+              }
+            />
+            {/*<XAxis dataKey="name" />*/}
+            <Area
+              type="monotone"
+              dataKey="uv"
+              name={"spent"}
+              stroke="#7F3DFF"
+              strokeWidth={5}
+              fill="rgba(139, 80, 255, 0.24)"
+              textLength={5}
+              label={"label"}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
     </>
   );
 };

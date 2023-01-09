@@ -5,6 +5,11 @@ import { ReactComponent as UserIcon } from "@assets/icons/user.svg";
 import styles from "@styles/components/Navigation.module.scss";
 import { NavItem } from "@/navigation/components/NavItem";
 import { AddAccounts } from "@/navigation/components/AddAccounts";
+import {
+  HOME_SCREEN,
+  PROFILE_SCREEN,
+  TRANSACTIONS_SCREEN,
+} from "@/navigation/CONSTANTS";
 
 export interface INavItem {
   title: string;
@@ -16,22 +21,22 @@ const navList = [
   {
     title: "Home",
     icon: <HomeIcon />,
-    path: "/home",
+    path: HOME_SCREEN,
   },
   {
     title: "Transaction",
     icon: <TransactionIcon />,
-    path: "/transactions",
+    path: TRANSACTIONS_SCREEN,
   },
   {
     title: "Profile",
     icon: <UserIcon />,
-    path: "/profile",
+    path: PROFILE_SCREEN,
   },
   {
     title: "Profile",
     icon: <UserIcon />,
-    path: "/profile",
+    path: PROFILE_SCREEN,
   },
 ];
 

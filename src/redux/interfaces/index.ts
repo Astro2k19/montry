@@ -15,8 +15,8 @@ export interface INewUser {
 }
 
 export interface IWallet {
-  balance: number;
-  id: string;
+  [key: string]: string | number;
   name: string;
   type: string;
+  balance: number;
 }

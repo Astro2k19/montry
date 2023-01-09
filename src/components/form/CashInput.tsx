@@ -6,9 +6,15 @@ import { SourceInfo } from "react-number-format/types/types";
 interface ICashInput {
   title: string;
   placeholder: string;
-  changeHandler: (_: NumberFormatValues, sourceInfo: SourceInfo) => void;
+  changeHandler: CashInputType;
   name: string;
 }
+
+export type CashInputType = (
+  _: NumberFormatValues,
+  sourceInfo: SourceInfo
+) => void;
+
 const CashInput: React.FC<ICashInput> = ({
   title,
   changeHandler,

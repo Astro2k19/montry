@@ -6,7 +6,7 @@ interface IInput {
   value: string;
   placeholder: string;
   type: string;
-  name?: string;
+  name: string;
   Icon?: React.ElementType;
 }
 

@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  padding-inline: 16px;
 
 
   button {
@@ -22,21 +23,54 @@
     background: #EEE5FF;
     color: $violete;
     border-radius: 40px;
+    outline: none;
+    border: none;
   }
 }
 
 .transactionItem {
   display: grid;
-  grid-template-columns: 60px 1px 60px;
-  column-gap: 6px;
+  grid-template-columns: 60px 1fr 60px;
+  column-gap: 10px;
   padding: 14px 17px;
   background: #FCFCFC;
   border-radius: 24px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  .transactionPrice {
+    &:before {
+      margin-right: 5px;
+    }
+  }
+
+
+  &.expense {
+    .transactionPrice {
+      color: $red;
+
+      &:before {
+        content: '-';
+      }
+    }
+  }
+
+  &.income {
+    .transactionPrice {
+      color: $green;
+
+      &:before {
+        content: '+';
+      }
+    }
+  }
 }
 
 .transactionBody {
 
   h6 {
+    margin-top: 0;
     margin-bottom: 13px;
     font-size: 16px;
     line-height: 19px;
@@ -49,6 +83,7 @@
   font-size: 13px;
   line-height: 16px;
   color: $grey;
+  font-weight: 500;
 }
 
 .transactionMeta {
@@ -60,7 +95,6 @@
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
-  color: $red ;
 }
 .transactionTime {
   font-size: 13px;

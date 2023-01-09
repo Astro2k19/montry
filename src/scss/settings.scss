@@ -9,6 +9,7 @@ $black: #212325;
 $grey: #91919F;
 $yellow: #FCAC12;
 $transYellow: #FCEED;
+$green: #00A86B;
 
 .button {
   display: flex;
@@ -64,4 +65,13 @@ h4 {
   font-size: 18px;
   line-height: 22px;
   color: $black;
+}
+
+// {
+//  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+//  scrollbar-width: none;  /* Firefox */
+//}
+
+::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }

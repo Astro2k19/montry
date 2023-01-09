@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "@/scss/components/Avatar.module.scss";
-import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { AvatarSkeleton } from "./AvatarSkeleton";
 import { useGetAvatarQuery } from "@/redux/api/apiDashboard";

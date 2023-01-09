@@ -3,7 +3,6 @@
   padding: 16px 0;
   align-items: center;
   color: $black;
-  gap:15%;
 
   &.white {
     color: $white;
@@ -11,6 +10,8 @@
 }
 
 .buttonBack {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,8 +25,10 @@
 }
 
 .barText {
+  flex: 1 1 auto;
   font-weight: 600;
   font-size: 18px;
   color: inherit;
   text-align: center;
+  margin-left: -10%;
 }

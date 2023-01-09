@@ -12,26 +12,13 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { setUser } from "@/redux/slices/authSlice";
-import { nanoid } from "@reduxjs/toolkit";
-
-const initialSignupUserState = (name: string, email: string) => ({
-  name,
-  email,
-  isSetup: false,
-  balance: 0,
-  wallets: [],
-  expenses: 0,
-  income: 0,
-  transactions: [],
-});
 
 export const apiSlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["wallets", "setup"],
   endpoints: (build) => ({
     signUpNewUser: build.mutation({
-      async queryFn({ email, name, password, dispatch }) {
+      async queryFn({ email, name, password }) {
         try {
           const userData = await createUserWithEmailAndPassword(
             auth,
@@ -40,13 +27,20 @@ export const apiSlice = createApi({
           );
 
           const usersCollectionRef = doc(db, "users", userData.user.uid);
-          await setDoc(usersCollectionRef, initialSignupUserState(name, email));
+          const walletsCollectionRef = doc(db, "wallets", userData.user.uid);
+          const transactions = doc(db, "transactions", userData.user.uid);
 
-          dispatch(
-            setUser({
-              uid: userData.user.uid,
-            })
-          );
+          await setDoc(usersCollectionRef, {
+            name,
+            email,
+            isSetup: false,
+            balance: 0,
+            expenses: 0,
+            income: 0,
+          });
+
+          await setDoc(walletsCollectionRef, {});
+          await setDoc(transactions, {});
 
           return {
             data: {
@@ -69,32 +63,25 @@ export const apiSlice = createApi({
           const userData = await getDoc(userRefDoc);
 
           return {
-            data: uid,
+            data: {
+              uid,
+            },
           };
         } catch (error) {
           return { error };
         }
       },
-      async onCacheEntryAdded(arg, { cacheDataLoaded, dispatch }) {
-        try {
-          const { data: uid } = await cacheDataLoaded;
-
-          dispatch(setUser({ uid }));
-        } catch (error) {
-          alert(error);
-        }
-      },
       invalidatesTags: ["setup"],
     }),
-    getSpecificUserField: build.query({
-      async queryFn({ fieldName, uid }) {
+    getSpecificDocField: build.query({
+      async queryFn({ fieldName, pathSegment, path }) {
         try {
-          const docRef = doc(db, "users", uid);
+          const docRef = doc(db, path, pathSegment);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            const data = docSnap.data();
-            return { data: data[fieldName] };
+            const data = docSnap.get(fieldName);
+            return { data };
           }
         } catch (error) {
           return { error };
@@ -102,11 +89,31 @@ export const apiSlice = createApi({
       },
       providesTags: (result, error, { fieldName }) => [fieldName],
     }),
+    getSpecificDoc: build.query({
+      async queryFn({ path, pathSegment, transformData }) {
+        try {
+          const docRef = doc(db, path, pathSegment);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            return {
+              data: transformData
+                ? transformData(docSnap.data())
+                : docSnap.data(),
+            };
+          }
+        } catch (e) {
+          alert(e);
+        }
+      },
+      providesTags: (result, error, { path }) => [path],
+    }),
   }),
 });
 
 export const {
   useSignUpNewUserMutation,
   useLogInUserWithCredentialsMutation,
-  useGetSpecificUserFieldQuery,
+  useGetSpecificDocFieldQuery,
+  useGetSpecificDocQuery,
 } = apiSlice;

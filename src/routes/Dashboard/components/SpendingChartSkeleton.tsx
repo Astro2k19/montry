@@ -1,16 +1,16 @@
 import React from "react";
 import ContentLoader, { IContentLoaderProps } from "react-content-loader";
 
-export const AvatarSkeleton: React.FC<IContentLoaderProps> = (props) => (
+export const SpendingChartSkeleton: React.FC<IContentLoaderProps> = (props) => (
   <ContentLoader
     speed={2}
-    width={40}
-    height={40}
-    viewBox="0 0 40 40"
+    width="100%"
+    height={190}
+    viewBox="0 0 375 190"
     backgroundColor="#f3f3f3"
     foregroundColor="#ecebeb"
     {...props}
   >
-    <circle cx="20" cy="20" r="19" />
+    <rect x="-5" y="0" rx="10" ry="10" width="375" height="190" />
   </ContentLoader>
 );

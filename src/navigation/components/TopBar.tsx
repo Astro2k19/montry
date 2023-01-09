@@ -2,7 +2,7 @@ import React from "react";
 import { BiArrowBack } from "react-icons/all";
 import styles from "@styles/components/TopBar.module.scss";
 import classNames from "classnames/bind";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 interface ITopBar {
   text: string;
@@ -23,6 +23,8 @@ export const TopBar: React.FC<ITopBar> = ({
   backPath = "#",
 }) => {
   const navigate = useNavigate();
+
+  console.log(backPath);
 
   const classes = cx(styles.bar, {
     white: type === TopBarTypes.LIGHT,

@@ -1,11 +1,12 @@
 import React from "react";
 import { ReactComponent as PlusIcon } from "@assets/icons/plus.svg";
 import styles from "@styles/components/Navigation.module.scss";
-import { ReactComponent as Expenses } from "@assets/icons/Expense.svg";
-import { ReactComponent as Income } from "@assets/icons/Income.svg";
+import { ReactComponent as Expenses } from "@assets/icons/Expense-small.svg";
+import { ReactComponent as Income } from "@assets/icons/Income-small.svg";
 import { ReactComponent as MoneyExchange } from "@assets/icons/Money-Exchange.svg";
 import { AddAccount } from "@/navigation/components/AddAccount";
 import { motion } from "framer-motion";
+import { ADD_EXPENSE_SCREEN, ADD_INCOME_SCREEN } from "@/navigation/CONSTANTS";
 
 const variants = {
   open: { opacity: 1 },
@@ -14,12 +15,16 @@ const variants = {
 
 const accountsList = [
   {
-    path: "transaction",
+    path: ADD_INCOME_SCREEN,
     children: <MoneyExchange />,
     classes: styles.addTransaction,
   },
-  { path: "expenses", children: <Expenses />, classes: styles.addExpense },
-  { path: "income", children: <Income />, classes: styles.addIncome },
+  {
+    path: ADD_EXPENSE_SCREEN,
+    children: <Expenses />,
+    classes: styles.addExpense,
+  },
+  { path: ADD_INCOME_SCREEN, children: <Income />, classes: styles.addIncome },
 ];
 
 export const AddAccounts = () => {

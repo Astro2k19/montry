@@ -4,7 +4,7 @@ import { ReactComponent as AttachmentIcon } from "@assets/icons/attachment.svg";
 import { AttachmentImage } from "@/components/form/AttachmentImage";
 
 interface IImageFileUploader {
-  onFileSelectSuccess: (imageUrl: string) => void;
+  onFileSelectSuccess: (imageData: string) => void;
   onFileSelectError: (message: string) => void;
   text: string;
   statePreviewImage?: string;
@@ -21,7 +21,7 @@ export const ImageFileUploader: React.FC<IImageFileUploader> = ({
   const [isSelected, setIsSelected] = React.useState(false);
 
   React.useEffect(() => {
-    if (statePreviewImage !== undefined && statePreviewImage !== "") {
+    if (statePreviewImage && statePreviewImage !== "") {
       setImageUrl(statePreviewImage);
       setIsSelected(true);
     }
@@ -37,7 +37,7 @@ export const ImageFileUploader: React.FC<IImageFileUploader> = ({
     }
     const file = filesList[0];
 
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith("image")) {
       onFileSelectError("You can choose only image!");
       return;
     }

@@ -19,7 +19,6 @@ export const SignUpPage = () => {
   const [signUpNewUser, { isSuccess, isLoading, isError, error }] =
     useSignUpNewUserMutation();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const signUpWithEmail = async (
     email: string,
@@ -30,7 +29,6 @@ export const SignUpPage = () => {
       email,
       name,
       password,
-      dispatch,
     });
   };
 

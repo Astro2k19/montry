@@ -1,0 +1,10 @@
+.root {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}
+
+.main {
+  align-self: end;
+}

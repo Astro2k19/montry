@@ -4,30 +4,39 @@ import {
   doc,
   getDoc,
   increment,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { db, uploadImage } from "@/firebase/firebase.config";
 import { nanoid } from "@reduxjs/toolkit";
-import { IWallet } from "@/redux/interfaces";
 
 export const apiSetup = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     saveNewWallet: builder.mutation({
       async queryFn({ wallet, uid }) {
+        const walletsRef = doc(db, "wallets", uid);
         const userRef = doc(db, "users", uid);
+
         try {
-          const wallets: IWallet[] = await updateDoc(userRef, {
-            wallets: arrayUnion({
-              id: nanoid(),
-              name: wallet.name,
-              type: wallet.type,
-              balance: Number(wallet.balance),
-            }),
+          const docSnap = await setDoc(
+            walletsRef,
+            {
+              [nanoid()]: {
+                name: wallet.name,
+                type: wallet.type,
+                balance: Number(wallet.balance),
+              },
+            },
+            { merge: true }
+          );
+
+          await updateDoc(userRef, {
             balance: increment(Number(wallet.balance)),
           });
 
-          return { data: wallets };
+          return { data: docSnap };
         } catch (error) {
+          console.log(error);
           return { error };
         }
       },

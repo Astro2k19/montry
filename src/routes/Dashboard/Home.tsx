@@ -6,13 +6,19 @@ import { useAppSelector } from "@/redux/hooks";
 import { SpendingChart } from "@/routes/Dashboard/components/SpendingChart";
 import { SpendingChartFiltr } from "@/routes/Dashboard/components/SpendingChartFiltr";
 import { RecentTransactions } from "@/routes/Dashboard/components/RecentTransactions";
+import { ITransaction } from "@/routes/Dashboard/components/TransactionItem";
 import { AccountBox } from "@/routes/Dashboard/components/AccountBox";
 import { ReactComponent as IncomeIcon } from "@assets/icons/Income.svg";
 import { ReactComponent as ExpenseIcon } from "@assets/icons/Expense.svg";
-import { useGetSpecificUserFieldQuery } from "@/redux/api/apiSlice";
+import { useGetSpecificDocQuery } from "@/redux/api/apiSlice";
 import TopPanel from "@/components/ui/TopPanel";
 import styles from "@/scss/routes/Dashboard.module.scss";
-import { serverTimestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import foodIcon from "@/assets/icons/food.svg";
+import shoppingIcon from "@/assets/icons/shopping.svg";
+import transportationIcon from "@/assets/icons/transportation.svg";
+import subscriptionIcon from "@/assets/icons/subscription.svg";
+import { transformDataToArray } from "@/utils/utils";
 
 const dataSpend = [
   {
@@ -45,13 +51,30 @@ const dataSpend = [
   },
 ];
 
-const transactionsData = [
+const transactionsData: ITransaction[] = [
   {
-    icon: "",
+    icon: foodIcon,
+    title: "Food",
+    description: "Buy a ramen",
+    price: 120,
+    timestamp: Timestamp.now(),
+    type: "expense",
+  },
+  {
+    icon: shoppingIcon,
     title: "Shopping",
     description: "Buy some grocery",
-    price: 120,
-    timestamp: serverTimestamp(),
+    price: 80,
+    timestamp: Timestamp.now(),
+    type: "expense",
+  },
+  {
+    icon: subscriptionIcon,
+    title: "Subscription",
+    description: "Disney+ Annual..",
+    price: 32,
+    timestamp: Timestamp.now(),
+    type: "income",
   },
 ];
 
@@ -61,23 +84,28 @@ const Home = () => {
     authUser?.uid
   );
   const { data: spendingData, isLoading: isLoadingSpending } =
-    useGetSpecificUserFieldQuery({
-      fieldName: "transactions",
-      uid: authUser?.uid,
+    useGetSpecificDocQuery({
+      path: "transactions",
+      pathSegment: authUser?.uid,
+      transformData: transformDataToArray,
     });
+
   const { data: transactions = [], isLoading: isLoadingTransactions } =
-    useGetSpecificUserFieldQuery({
-      fieldName: "transactions",
-      uid: authUser?.uid,
+    useGetSpecificDocQuery({
+      path: "transactions",
+      pathSegment: authUser?.uid,
+      transformData: transformDataToArray,
     });
 
   const isLoading = () => {
     return [isLoadingGeneral, isLoadingSpending, isLoadingTransactions].some(
       Boolean
     );
+
+    // return false;
   };
 
-  let incomeStyle: React.CSSProperties = {
+  const incomeStyle: React.CSSProperties = {
     backgroundColor: "#00A86B",
   };
 
@@ -85,25 +113,22 @@ const Home = () => {
     backgroundColor: "#FD3C4A",
   };
 
-  console.log(data);
-
   return (
     <div className={styles.dashboardHome}>
       <Header />
-
       <TopPanel>
         <Balance amount={data?.balance} isLoading={isLoading()} />
         <div style={{ display: "flex", gap: "16px", marginBottom: "10px" }}>
           <AccountBox
             text={"Income"}
-            amount={data?.income}
+            amount={data?.income ?? 0}
             Icon={<IncomeIcon />}
             compStyle={incomeStyle}
             isLoading={isLoading()}
           />
           <AccountBox
             text={"Expenses"}
-            amount={data?.expenses}
+            amount={data?.expenses ?? 0}
             Icon={<ExpenseIcon />}
             compStyle={expensesStyle}
             isLoading={isLoading()}
@@ -112,7 +137,11 @@ const Home = () => {
       </TopPanel>
       <SpendingChart data={dataSpend} isLoading={isLoading()} />
       <SpendingChartFiltr />
-      <RecentTransactions transactions={transactions} isLoading={isLoading()} />
+      <RecentTransactions
+        transactions={transactionsData}
+        isLoading={isLoading()}
+        isFetching={isLoading()}
+      />
     </div>
   );
 };

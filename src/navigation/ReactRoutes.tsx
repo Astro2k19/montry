@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, useLocation } from "react-router-dom";
+import { Routes, useLocation, Navigate } from "react-router-dom";
 import { Route } from "react-router";
 import { LaunchScreen } from "../routes/LaunchScreen";
 import { Auth } from "../routes/Auth";
@@ -14,8 +14,11 @@ import Profile from "../routes/Dashboard/Profile";
 import SetupAccountIndex from "../routes/SetupAccount";
 import NewAccount from "../routes/SetupAccount/newAccount";
 import {
+  ADD_EXPENSE_SCREEN,
+  ADD_INCOME_SCREEN,
   AUTH_SCREEN,
   DASHBOARD_SCREEN,
+  HOME_SCREEN,
   LOGIN_SCREEN,
   PROFILE_SCREEN,
   SETUP_ACCOUNT_SCREEN,
@@ -25,6 +28,37 @@ import {
   TRANSACTIONS_SCREEN,
 } from "./CONSTANTS";
 import SetupLogo from "@/routes/SetupAccount/SetupLogo";
+import { NewTransaction } from "@/routes/Dashboard/NewTransaction";
+
+const incomeCategories = [
+  {
+    value: "salary",
+    label: "Salary",
+  },
+  {
+    value: "salary",
+    label: "Salary",
+  },
+];
+
+const expenseCategories = [
+  {
+    value: "food",
+    label: "Food",
+  },
+  {
+    value: "shopping",
+    label: "Shopping",
+  },
+  {
+    value: "subscription",
+    label: "Subscription",
+  },
+  {
+    value: "transportation",
+    label: "Transportation",
+  },
+];
 
 const ReactRoutes = () => {
   const location = useLocation();
@@ -45,10 +79,30 @@ const ReactRoutes = () => {
           element={<Dashboard />}
           errorElement={<ErrorPage />}
         >
-          <Route index element={<Home />} />
+          <Route path={HOME_SCREEN} element={<Home />} />
           <Route path={TRANSACTIONS_SCREEN} element={<Transactions />} />
           <Route path={PROFILE_SCREEN} element={<Profile />} />
         </Route>
+        <Route
+          path={ADD_INCOME_SCREEN}
+          element={
+            <NewTransaction
+              title={"Income"}
+              categories={incomeCategories}
+              style={{ background: "#00A86B" }}
+            />
+          }
+        />
+        <Route
+          path={ADD_EXPENSE_SCREEN}
+          element={
+            <NewTransaction
+              title={"Expense"}
+              categories={expenseCategories}
+              style={{ background: "#FD3C4A" }}
+            />
+          }
+        />
       </Route>
       <Route element={<ProtectedRoutes requireSetup={false} />}>
         <Route
