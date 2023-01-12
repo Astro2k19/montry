@@ -1,0 +1,63 @@
+.react-datepicker {
+  border-radius: 16px;
+  font-family: 'Inter', sans-serif;
+  border-color: #F1F1FA;
+
+  &__input-container {
+    input {
+      width: 100%;
+      min-height: 50px;
+      background-color: hsl(0, 0%, 100%);
+      border-color: #F1F1FA;
+      color: $grey;
+      outline-color: $grey;
+      border-radius: 16px;
+      border-style: solid;
+      border-width: 2px;
+      text-align: center;
+    }
+  }
+
+  &__header {
+    background-color: $white;
+    border-bottom-color: #F1F1FA;
+    border-top-left-radius: 16px;
+
+    &:not(.react-datepicker__header--has-time-select) {
+      border-top-right-radius: 16px;
+    }
+  }
+
+  &__time-container  {
+    border-left-color: #F1F1FA;
+
+    .react-datepicker__time {
+      border-bottom-right-radius: 16px;
+      .react-datepicker__time-box {
+        border-bottom-right-radius: 16px;
+      }
+    }
+  }
+
+  &__day{
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &--selected {
+      background-color: $violete;
+    }
+  }
+
+  &__time-list-item {
+    &--selected {
+      background-color: $violete !important;
+    }
+  }
+
+
+  &__triangle::after {
+    border-top-color: $white;
+  }
+}

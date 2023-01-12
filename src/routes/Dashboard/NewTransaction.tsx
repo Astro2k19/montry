@@ -17,6 +17,9 @@ import { capitalizeFirstLetter, transformDataToArray } from "@/utils/utils";
 import { HOME_SCREEN } from "@/navigation/CONSTANTS";
 import { IWallet } from "@/redux/interfaces";
 import ScreenCurtain from "@/components/ui/ScreenCurtain";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/scss/components/DatePicker.scss";
 
 interface ICategory extends IOption<string> {}
 
@@ -54,6 +57,7 @@ export const NewTransaction: React.FC<INewTransaction> = ({
     amount: 0,
     description: "",
     attachmentData: "",
+    date: new Date(),
   });
 
   const clickHandler = () => {
@@ -63,10 +67,12 @@ export const NewTransaction: React.FC<INewTransaction> = ({
     const { amount } = transaction;
 
     if (wallet.balance && wallet.balance >= transaction.amount) {
-      console.log("right");
+      //   transaction amount cannot be equal - 0;
+      //   category & wallet must be chosen
+      //   description & attachment are optional, but before submitting data there should be an alert popup for confirmation or canceling
+      //   wallet balance cannot be lesser than transaction amount
+      setIsOpen((prevIsOpen) => !prevIsOpen);
     }
-
-    // setIsOpen((prev) => !prev);
   };
 
   const closeCurtain = (event: React.MouseEvent) => {
@@ -123,6 +129,20 @@ export const NewTransaction: React.FC<INewTransaction> = ({
               isLoading={isLoading}
               placeholder={"Wallet"}
             />
+            <div>
+              <DatePicker
+                selected={transaction.date}
+                onChange={(date) =>
+                  setTransaction((prevState) => ({ ...prevState, date }))
+                }
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+                style={{ marginBottom: "15px" }}
+              />
+            </div>
             <ImageFileUploader
               onFileSelectSuccess={(attachmentData) =>
                 setTransaction((prevState) => ({
@@ -146,12 +166,17 @@ export const NewTransaction: React.FC<INewTransaction> = ({
         closeCurtain={closeCurtain}
         ref={curtainRef}
       >
-        <DataInput
-          handleOnChange={console.log}
-          value={"test"}
-          placeholder={"test"}
-          type={"text"}
-          name={"hello"}
+        <DatePicker
+          selected={transaction.date}
+          onChange={(date) =>
+            setTransaction((prevState) => ({ ...prevState, date }))
+          }
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="Time"
+          dateFormat="MMMM d, yyyy h:mm aa"
+          style={{ marginBottom: "15px" }}
         />
         <Button
           text={"Next"}

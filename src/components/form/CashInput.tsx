@@ -34,10 +34,6 @@ const CashInput: React.FC<ICashInput> = ({
         const target = event.target as HTMLInputElement;
         if (target.value.trim() === "") {
           target.value = "$0";
-          //   transaction amount cannot be equal - 0;
-          //   category & wallet must be chosen
-          //   description & attachment are optional, but before submitting data there should be an alert popup for confirmation or canceling
-          //   wallet balance cannot be lesser than transaction amount
         }
       });
     }
