@@ -21,12 +21,27 @@ const CashInput: React.FC<ICashInput> = ({
   placeholder = "0",
   name,
 }) => {
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const clickHandler = (event: React.MouseEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     target.select();
   };
+
+  React.useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.addEventListener("focusout", (event) => {
+        const target = event.target as HTMLInputElement;
+        if (target.value.trim() === "") {
+          target.value = "$0";
+          //   transaction amount cannot be equal - 0;
+          //   category & wallet must be chosen
+          //   description & attachment are optional, but before submitting data there should be an alert popup for confirmation or canceling
+          //   wallet balance cannot be lesser than transaction amount
+        }
+      });
+    }
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -35,6 +50,7 @@ const CashInput: React.FC<ICashInput> = ({
         type="text"
         allowNegative={false}
         thousandSeparator=","
+        valueIsNumericString={true}
         prefix={"$"}
         value={placeholder}
         onValueChange={changeHandler}

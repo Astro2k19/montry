@@ -101,7 +101,7 @@ const SetupNewAccount = () => {
           title={"Balance"}
           placeholder={"$00.0"}
           changeHandler={(values, sourceInfo) =>
-            onCashInputChange(values, sourceInfo, setSetupState)
+            onCashInputChange(Number(values.value), sourceInfo, setSetupState)
           }
           name={"balance"}
         />

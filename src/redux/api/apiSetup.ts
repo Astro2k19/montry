@@ -22,7 +22,7 @@ export const apiSetup = apiSlice.injectEndpoints({
             walletsRef,
             {
               [nanoid()]: {
-                name: wallet.name,
+                value: wallet.name,
                 type: wallet.type,
                 balance: Number(wallet.balance),
               },

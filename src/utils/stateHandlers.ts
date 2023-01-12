@@ -18,7 +18,7 @@ export const onChangeInput = <T>(
 };
 
 export const onCashInputChange = <T>(
-  values: NumberFormatValues,
+  value: number | string,
   sourceInfo: SourceInfo,
   setState: React.Dispatch<React.SetStateAction<T>>
 ) => {
@@ -27,7 +27,7 @@ export const onCashInputChange = <T>(
   if (target) {
     setState((prevSetupState: T) => ({
       ...prevSetupState,
-      [target.name]: values.value,
+      [target.name]: value,
     }));
   }
 };

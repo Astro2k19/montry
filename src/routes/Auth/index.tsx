@@ -6,11 +6,13 @@ import { useNavigate } from "react-router";
 import {
   DASHBOARD_SCREEN,
   LOGIN_SCREEN,
+  SETUP_ACCOUNT_SCREEN,
   SIGNUP_SCREEN,
 } from "@/navigation/CONSTANTS";
 import { useAppSelector } from "@/redux/hooks";
 import { useIsUserSetupQuery } from "@/redux/api/apiSetup";
 import React from "react";
+import { Navigate } from "react-router-dom";
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -19,6 +21,12 @@ export const Auth = () => {
 
   const { authUser } = useAppSelector((state) => state.auth);
   const { data: isSetup } = useIsUserSetupQuery({ uid: authUser?.uid });
+
+  if (authUser && isSetup) {
+    return <Navigate to={DASHBOARD_SCREEN} />;
+  } else if (authUser && !isSetup) {
+    return <Navigate to={SETUP_ACCOUNT_SCREEN} />;
+  }
 
   React.useEffect(() => {
     if (authUser && isSetup) navigate(DASHBOARD_SCREEN, { replace: true });

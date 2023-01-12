@@ -35,6 +35,9 @@ export const LoginPage = () => {
     return <Navigate to={SETUP_ACCOUNT_SCREEN} replace={true} />;
   }
 
+  console.log(authUser);
+  console.log(isSuccess, "isSuccess");
+
   if (authUser && isSetup) {
     return <Navigate to={DASHBOARD_SCREEN} replace={true} />;
   }

@@ -18,7 +18,7 @@ import { HOME_SCREEN } from "@/navigation/CONSTANTS";
 import { IWallet } from "@/redux/interfaces";
 import ScreenCurtain from "@/components/ui/ScreenCurtain";
 
-interface ICategory extends IOption {}
+interface ICategory extends IOption<string> {}
 
 interface INewTransaction {
   title: string;
@@ -46,7 +46,7 @@ export const NewTransaction: React.FC<INewTransaction> = ({
     });
 
   const [category, setCategory] = React.useState({});
-  const [wallet, setWallet] = React.useState({});
+  const [wallet, setWallet] = React.useState<IWallet | {}>({});
   const [isOpen, setIsOpen] = React.useState(false);
   const curtainRef = React.useRef<HTMLDivElement | undefined>();
 
@@ -58,9 +58,14 @@ export const NewTransaction: React.FC<INewTransaction> = ({
 
   const clickHandler = () => {
     console.log(wallet, "wallet");
-    // console.log(category, "category");
-    // console.log(transaction, "transaction");
-    console.log("test");
+    console.log(category, "category");
+    console.log(transaction, "transaction");
+    const { amount } = transaction;
+
+    if (wallet.balance && wallet.balance >= transaction.amount) {
+      console.log("right");
+    }
+
     // setIsOpen((prev) => !prev);
   };
 
@@ -77,14 +82,11 @@ export const NewTransaction: React.FC<INewTransaction> = ({
   const formatWallets = () => {
     if (!isLoading) {
       return wallets.map((wallet) => ({
-        label: `${capitalizeFirstLetter(wallet.name)} - ${wallet.balance}$`,
-        value: wallet.name,
-        balance: "#FF8B00",
+        ...wallet,
+        label: `${capitalizeFirstLetter(wallet.value)} - ${wallet.balance}$`,
       }));
     }
   };
-
-  console.log(isOpen);
 
   return (
     <div style={style} className={styles.root}>
@@ -93,9 +95,10 @@ export const NewTransaction: React.FC<INewTransaction> = ({
         <CashInput
           title={"How much?"}
           placeholder={"$0"}
-          changeHandler={(values, sourceInfo) =>
-            onCashInputChange(values, sourceInfo, setTransaction)
-          }
+          changeHandler={(values, sourceInfo) => {
+            console.log(values);
+            onCashInputChange(Number(values.value), sourceInfo, setTransaction);
+          }}
           name={"amount"}
         />
         <BottomPanel>
